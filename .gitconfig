@@ -1,0 +1,13 @@
+[user]
+	name = Pierre Karashchuk
+	email = krchtchk@gmail.com
+[alias]
+	c = commit
+	cm = commit -m
+	cam = commit -am
+	co = checkout
+	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	d = diff --color -b
+	s = status
+	b = branch
+	pom = push -u origin master

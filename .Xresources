@@ -1,0 +1,29 @@
+
+
+Xcursor.theme: Vanilla-DMZ-AA
+Xcursor.size: 48
+! Emacs.font: Inconsolata-8.5
+Emacs.fontBackend: xft
+Emacs.menuBar: off
+Emacs.toolBar: -1
+Emacs.verticalScrollBars: off
+
+
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintmedium
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.dpi: 192
+Xft.rgba: rgb
+
+URxvt*font: xft:Dina-10
+
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+rofi.color-enabled: true
+rofi.color-window: #273238, #273238, #1e2529
+rofi.color-normal: #273238, #c1c1c1, #273238, #394249, #ffffff
+rofi.color-active: #273238, #80cbc4, #273238, #394249, #80cbc4
+rofi.color-urgent: #273238, #ff1844, #273238, #394249, #ff1844
