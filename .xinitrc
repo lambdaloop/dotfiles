@@ -141,7 +141,7 @@ redshift-gtk -l 37.8717:-122.2728  -t 6500:3100 -m randr & #color adjustion
 # music daemon
 mpd &
 
-emacs --daemon &
+# emacs --daemon &
 # env LC_CTYPE=zh_CN.UTF-8 emacs --daemon & #emacs daemon, helps emacs start faster
 thunar --daemon & #faster thunar start time
 
