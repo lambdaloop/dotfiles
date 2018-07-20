@@ -1,40 +1,12 @@
-!remap XF86LaunchB to F4 (for gnome-do)
-
-!keycode 71 = XF86LaunchB
-!keycode 212 = XF86LaunchB
 
 clear Lock
 clear Mod3
-!     add Mod3 = Caps_Lock
 clear mod4
       
 remove control = Control_L
 
-! remove shift = Shift_R
-! remove mod1 = Alt_L Meta_L
-
 keycode 66 = Control_L
 keycode 134 = Alt_L Meta_L
 
-! keycode 66 = BackSpace
-
-
-! keycode 37 = Super_L Hyper_L
-! keycode 64 = Alt_L Meta_L
-
-! keycode 62 = Control_L
-! keycode 37 = Shift_R
-
 add control = Control_L
 add mod3 = Super_L Hyper_L
-! add shift = Shift_R
-! add mod1 = Alt_L Meta_L
-
-! keycode 134 = Pointer_Button3
-! keycode 134 = Super_R
-! keycode 134 = Hangul_Hanja
-! keycode 134 = Control_L
-
-! clear shift
-! add shift = Shift_L
-! keycode 62 = Alt_L Meta_L
