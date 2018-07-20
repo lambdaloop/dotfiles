@@ -25,23 +25,6 @@ function two-screens
     fi
 }
 
-#nv-control-dpy --add-metamode "DFP-0: 1280x800 @1280x800 +0+0"
-
-# nv-control-dpy --add-metamode "DFP-0: nvidia-auto-select @1280x800 +0+0, DFP-2: nvidia-auto-select @1920x1080 +1280+0"
-# nv-control-dpy --add-metamode "DFP-2: nvidia-auto-select @1920x1080 +0+0"
-
-# oneID=`nv-control-dpy --print-metamodes | grep 'nv-control.*1280x800 @'`
-# oneID=`expr "$oneID" : ".*id=\([0-9]*\)"`
-# twoID=`nv-control-dpy --print-metamodes | grep '+0+630'`
-# twoID=`expr "$twoID" : ".*id=\([0-9]*\)"`
-oneID=50
-twoID=51
-
-#two-screens 'xrandr -s 0' ''
-id=`two-screens "echo $oneID" "echo $twoID"`
-#two-screens '' "nvidia-settings -a 'CurrentMetaModeID=55'"
-#nvidia-settings -a "CurrentMetaModeID=$id"
-#nvidia-settings -a "XineramaInfoOrder=DFP-2, DFP-0"
 
 # two-screens '' 'xrandr --output DP-1 --right-of LVDS-0 --auto --primary; xrandr --output LVDS-0 --pos 0x0'
 
@@ -55,11 +38,6 @@ export ELM_SCALE=1.5
 # export QT_DEVICE_PIXEL_RATIO=2
 export QT_AUTO_SCREEN_SCALE_FACTOR=2
 
-#KEYBOARD
-xset r rate 200 15 # set keyboard repeat and delay
-setxkbmap -option ctrl:nocaps
-xmodmap ~/.xmodmap && xkbset m
-# sleep 4 && bash ~/scripts/remap_space.sh &
 
 #manage backgrounds and trayer
 bash ~/scripts/twoScreenStuff.sh
@@ -72,6 +50,7 @@ dunst /home/pierre/.config/dunst/dunstrc &
 ``
 # twmnd &
 
+xsetroot -cursor_name left_ptr
 
 ## IBus
 # export GTK_IM_MODULE=ibus
@@ -98,7 +77,13 @@ uim-toolbar-gtk3-systray &
 
 export BROWSER=firefox;
 
-setxkbmap dvorak; xmodmap ~/.xmodmap
+
+#KEYBOARD
+setxkbmap dvorak
+setxkbmap -option ctrl:nocaps
+xmodmap ~/.xmodmap && xkbset m
+# sleep 4 && bash ~/scripts/remap_space.sh &
+xset r rate 200 15 # set keyboard repeat and delay
 
 ## SCIM
 # export XMODIFIERS=@im=SCIM
@@ -131,7 +116,7 @@ export EDITOR="emacsclient --alternate-editor='emacs' -c"
 # redshift-gtk -l 41.73:-71.30  -t 6500:4000 -m vidmode & #color adjustion
 redshift-gtk -l 37.8717:-122.2728  -t 6500:3100 -m randr & #color adjustion
 
-# sleep 15 && dropbox &
+sleep 15 && dropbox &
 
 # killall gnome-keyring-daemon & #helps i think
 # gnome-keyring-daemon -s -d &
@@ -146,8 +131,6 @@ mpd &
 thunar --daemon & #faster thunar start time
 
 nm-applet &
-
-/home/pierre/bin/zotero &
 
 # will mute exaile when SKY FM ads come up
 # bash ~/scripts/exaile_radio_ads_mute.sh &
