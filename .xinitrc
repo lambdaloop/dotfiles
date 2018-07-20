@@ -7,12 +7,6 @@ export PATH=/home/pierre/.local/bin:$PATH
 #Xresources
 xrdb -merge ~/.Xresources
 
-# sudo zpool import -f jellyfish &
-#Network
-#wicd-client -t &
-
-#screentest=`xrandr | grep 'minimum 320 x 175'`
-# screentest=`disper -l | wc -l`
 screentest=`xrandr | grep ' connected' | wc -l`
 
 #does different stuff depending on number of screens
@@ -47,8 +41,6 @@ bash ~/scripts/twoScreenStuff.sh
 
 #notification daemon thing
 dunst /home/pierre/.config/dunst/dunstrc &
-``
-# twmnd &
 
 xsetroot -cursor_name left_ptr
 
@@ -82,7 +74,6 @@ export BROWSER=firefox;
 setxkbmap dvorak
 setxkbmap -option ctrl:nocaps
 xmodmap ~/.xmodmap && xkbset m
-# sleep 4 && bash ~/scripts/remap_space.sh &
 xset r rate 200 15 # set keyboard repeat and delay
 
 ## SCIM
@@ -95,8 +86,6 @@ xset r rate 200 15 # set keyboard repeat and delay
 
 #editor
 export EDITOR="emacsclient --alternate-editor='emacs' -c"
-
-#alsactl restore #sound!
 
 #transparency
 # disabled because of the weird transparent xfce4-terminal borders
@@ -121,19 +110,12 @@ sleep 15 && dropbox &
 # killall gnome-keyring-daemon & #helps i think
 # gnome-keyring-daemon -s -d &
 
-#cgmailservice &
-
 # music daemon
 mpd &
 
-# emacs --daemon &
-# env LC_CTYPE=zh_CN.UTF-8 emacs --daemon & #emacs daemon, helps emacs start faster
 thunar --daemon & #faster thunar start time
 
 nm-applet &
-
-# will mute exaile when SKY FM ads come up
-# bash ~/scripts/exaile_radio_ads_mute.sh &
 
 #BLUETOOTH
 #/usr/sbin/bluetoothd --udev &
@@ -143,8 +125,6 @@ nm-applet &
 
 # Google music
 sleep 4 && bash ~/scripts/run_gmusicproxy.sh &
-
-# emacsclient -c ~/Dropbox/org/today.org &
 
 sleep 1 & bash ~/scripts/reset_empty_pipe.sh &
 sleep 2 & xmobar ~/.xmonad/xmobar/xmobarrc_1 &
