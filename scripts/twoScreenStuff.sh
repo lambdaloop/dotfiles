@@ -49,3 +49,4 @@ trayer --width $trayerWidth $trayerOpts &
 #    'trayer --width $width3 $trayerOpts' &
 
 # trayer $trayerOpts &
+

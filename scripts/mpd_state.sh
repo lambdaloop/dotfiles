@@ -3,11 +3,6 @@
 state=`timeout 0.5 mpc status | grep playing`;
 
 if [ -n "$state" ]; then
-# if [ -s ~/.mpd/pid ]; then
-
-    # SHUFFLE_ICON="<icon=.xmonad/icons/kyrylo/player_shuffle1.xbm/>"
-    # REPEAT_ICON="<icon=.xmonad/icons/kyrylo/player_repeat1.xbm/>"
-
     SHUFFLE_ICON="<fn=1></fn>"
     REPEAT_ICON="<fn=1></fn>"
     
