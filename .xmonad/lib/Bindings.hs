@@ -220,13 +220,12 @@ leftMostKey = xK_grave -- idk for dvp
 
 upKeys = normalUpKeys ++ [zeroKey]
 
-myKeys conf 1 = [((m .|. modm, k), sequence_ [windows $ f i, act i])
+myKeys conf 1 = [((m .|. modm, k), sequence_ [windows $ f i, act i, updateWorkspaceBar])
                    | (i, k) <- zip (XMonad.workspaces conf) upKeys
-                   , (f, m, act) <- [ (W.greedyView, 0,
-                                                            \i -> changeWorkspaceBackground i) -- >> redrawWindows)
+                   , (f, m, act) <- [ (W.greedyView, 0, \i -> changeWorkspaceBackground i) -- >> redrawWindows)
                                                     , (W.shift, shiftMask, const (return ()) )]]
 
-myKeys conf 2 = [((m .|. modm, k), sequence_ [windows $ f i, act])
+myKeys conf 2 = [((m .|. modm, k), sequence_ [windows $ f i, act, updateWorkspaceBar])
                    | (i, k) <- zip (XMonad.workspaces conf) upKeys
                    , (f, m, act) <- [(W.greedyView, 0, return ()) -- redrawWindows)
                                                     ,(W.shift, shiftMask, return ())]]

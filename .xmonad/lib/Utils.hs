@@ -141,4 +141,6 @@ reallyRedrawWindows = spawn "xfce4-terminal -e '/usr/bin/sleep 0.02'"
 -- redrawWindows = spawn "/usr/bin/sleep 0.05"
 -- redrawWindows = withFocused (windows . ((flip W.float) (W.RationalRect 0 40 2500 1500))) >> withFocused (windows . W.sink) >> rescreen
 
+updateWorkspaceBar :: X ()
+updateWorkspaceBar =  spawn "/usr/bin/python3 ~/scripts/get_workspaces.py > /tmp/xmobar.ws"
 
