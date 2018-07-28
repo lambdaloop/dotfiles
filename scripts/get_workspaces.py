@@ -34,7 +34,8 @@ def xmobar_color(s, col):
 out = []
 for i in range(int(numtotal)):
     if i == curr:
-        col = "#c84c00"
+        # col = "#c84c00"
+        col = "#e67128"
     elif i in used_windows:
         col = None
     else:
