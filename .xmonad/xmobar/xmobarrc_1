@@ -3,8 +3,8 @@ Config {
   , additionalFonts = ["xft:FontAwesome-8", "xft:Droid Sans:size=9.5:antialias=true:style=bold", "xft:Noto Sans CJK KR:size=9.5:antialias=true"]
   , borderColor = "#2d2d2d"
   , border = NoBorder
-  , bgColor =  "#26292C"
-  , fgColor = "#ddccaa"
+  , bgColor =  "#2D3743" -- "#26292C"
+  , fgColor = "#ddccaa" -- "#e1e1e0"
   , textOffset = 28
   , iconOffset = 17
   , position = TopSize L 92 42
@@ -24,7 +24,8 @@ Config {
                          [ ( 0, False, "/tmp/xmonad.empty"  )
                          , ( 12, False, "/tmp/xmonad.music"  )
                          ]
-               , Run Com "/usr/bin/python3" ["/home/pierre/scripts/get_workspaces.py"] "workspaces" 1
+               -- , Run Com "/usr/bin/python3" ["/home/pierre/scripts/get_workspaces.py"] "workspaces" 10
+               , Run PipeReader "/tmp/xmobar.ws" "workspaces"
                ]
   , sepChar = "%"
   , alignSep = "}{"

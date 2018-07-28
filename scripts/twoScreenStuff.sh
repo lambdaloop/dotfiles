@@ -31,7 +31,7 @@ function three-modes-eval
 
 bash ~/scripts/changeBackground.sh &
 
-trayerOpts="--edge top --align right --SetDockType true --SetPartialStrut true --expand true --height 42 --transparent true --tint 0x2d2d2d --alpha 0 --padding 0 --widthtype pixel"
+trayerOpts="--edge top --align right --SetDockType true --SetPartialStrut true --expand true --height 42 --transparent true --tint 0x2D3743 --alpha 0 --padding 0 --widthtype pixel"
 
 percent=`three-modes 16 8`
 
