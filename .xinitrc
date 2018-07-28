@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH="/home/pierre/.cabal/bin:$PATH"
+export PATH=/home/pierre/.cabal/bin:$PATH
 export PATH=/home/pierre/bin:$PATH
 export PATH=/home/pierre/.local/bin:$PATH
 
@@ -75,6 +75,7 @@ setxkbmap dvorak
 setxkbmap -option ctrl:nocaps
 xmodmap ~/.xmodmap && xkbset m
 xset r rate 200 15 # set keyboard repeat and delay
+xcape -e "Control_L=Control_L|C" -t 300
 
 ## SCIM
 # export XMODIFIERS=@im=SCIM
@@ -111,7 +112,7 @@ sleep 15 && dropbox &
 # gnome-keyring-daemon -s -d &
 
 # music daemon
-mpd &
+mpd && mpc pause &
 
 thunar --daemon & #faster thunar start time
 
@@ -123,12 +124,18 @@ nm-applet &
 #bluetooth-applet &
 # sleep 2 && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
+
+
+# emacs --daemon &
+
 # Google music
 sleep 4 && bash ~/scripts/run_gmusicproxy.sh &
 
-sleep 1 & bash ~/scripts/reset_empty_pipe.sh &
-sleep 2 & xmobar ~/.xmonad/xmobar/xmobarrc_1 &
+sleep 1 && bash ~/scripts/reset_empty_pipe.sh &
+sleep 2 && xmobar ~/.xmonad/xmobar/xmobarrc_1 &
 
 # exec ck-launch-session dbus-launch --exit-with-session xmonad
 # sleep 1 && exec xmonad
-exec dbus-launch --exit-with-session emacs
+# exec dbus-launch --exit-with-session ~/builds/remacs/src/remacs
+exec dbus-launch --exit-with-session /usr/local/bin/emacs
+# exec dbus-launch --exit-with-session emacsclient -c
