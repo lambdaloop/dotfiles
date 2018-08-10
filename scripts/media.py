@@ -21,7 +21,7 @@ socks = glob.glob('/tmp/mpsyt-*.sock')
 
 x = os.popen('ps -ef | grep mpsyt').read().strip().split('\n')
 
-if len(socks) >= 1:
+if len(socks) >= 1: 
 #if len(x) > 2:
     ## mpsyt playing
     sock = socks[0]
@@ -54,11 +54,10 @@ if player == 'mpsyt':
     elif cmd == 'seek-prev':
         os.popen("echo 'seek -10' | socat - {}".format(sock))
     elif cmd == 'pause':
-        os.popen("echo 'pause' | socat - {}".format(sock))
+        os.popen("echo 'keypress \" \"' | socat - {}".format(sock))
     elif cmd == 'get-paused':
-        x = os.popen("""echo '{{ "command": ["get_property", "pause"] }}'  | socat - {}""".format(sock)).read()
-        x = json.loads(x)
-        print(x['data'])
+        paused = get_property('pause', sock)
+        print(paused)
     elif cmd == 'get-title' or cmd == 'get-details':
 
         lines = os.popen('ps -ef | grep mpv').read()
@@ -112,7 +111,7 @@ elif player == 'mpc':
             status = m.groups()[0]
             print(status == 'paused')
     elif cmd == 'get-title':
-        title = os.popen('mpc current -f "[%title%|%file%]"').read()
+        title = os.popen('mpc current -f "[%title%|%name%|%file%]"').read()
         title = to_unicode(title)
         if len(sys.argv) >= 3:
             num = int(sys.argv[2])
