@@ -1,0 +1,141 @@
+:root {
+    --colorA: #5485BF;
+    --colorB: #5A6E87;
+    --colorC: #777777;
+    --colorD: #00ede1;
+    --colorE: #2D3743;
+    --colorF: #2D3743;
+    --colorG: green;
+    --tab-height: 34px;
+    --font-size: 15px;
+    background-color: var(--colorF) !important;
+}
+
+:root.simulate-svg-context-fill .closebox::after {
+    background: white;
+}
+
+:root.simulate-svg-context-fill .::after {
+    background: white;
+}
+
+:root.simulate-svg-context-fill .tab.active .closebox::after {
+    background: black;
+}
+
+:root.simulate-svg-context-fill .tab:hover .closebox::after {
+    background: black;
+}
+
+:root.simulate-svg-context-fill .tab.active .sound-button::after {
+    background: black;
+}
+
+:root.simulate-svg-context-fill .tab:hover .sound-button::after {
+    background: black;
+}
+
+#tabbar {
+    border-right: 1px solid #1d1d1d;
+    box-shadow: none !important;
+}
+
+.tab {
+    background-color: var(--colorE);
+    height: var(--tab-height);
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid var(--colorF);
+    box-shadow: none !important;
+}
+
+.label {
+    font-size: var(--font-size);
+}
+
+.tab .label {
+    color: white;
+    mask-image: linear-gradient(to left, transparent 0, black 0.5em) !important;
+}
+
+.tab.active .label {
+    color: white;
+}
+
+.tab .counter {
+    color: var(--colorD);
+}
+
+.tab.active .twisty
+{
+    color: var(--colorG);
+}
+
+.tab.active {
+    color: black;
+    background-color: var(--colorA);
+}
+
+.tab.active:hover {
+    background-color: var(--colorA);
+}
+
+.tab:hover .label {
+    color: white;
+}
+
+.tab:hover, .tab:not(.active):hover {
+    color: white;
+    background-color: var(--colorB);
+}
+
+
+
+/* .tab.unread .label { */
+/*   font-style: italic; */
+/* } */
+
+.tab.discarded {
+    color: var(--colorC);
+    background-color: black;
+    border-top: none;
+    border-bottom: 1px solid black;
+}
+
+.tab.private-browsing .label:before {
+    content: "🕶";
+}
+
+
+/* more custom */
+/* .tab .twisty { */
+/*     margin-right: -1.5em; */
+/*     opacity: 0; */
+/*     position: relative; */
+/*     z-index: 10000; */
+/* } */
+
+
+/* .closebox::after {  */
+/*   content: "⨉"; */
+
+/*   background: none; */
+/*   line-height: 1; */
+/*   mask: none; */
+/*   text-align: center; */
+/*   width: 0.8em; */
+/*   color: white; */
+/* } */
+
+.tab:not(:hover) .closebox {
+    display: none;
+}
+/* Change styling of pending (unloaded) tabs */
+.tab.discarded {
+    opacity: 0.6;
+}
+
+.tab.discarded .favicon {
+  opacity: 0.6 !important;
+}

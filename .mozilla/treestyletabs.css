@@ -1,0 +1,48 @@
+/* Less visible tab dividers. 
+   A black border with a very low alpha slightly darkens any color. */
+
+
+.tab {
+  background: #2D3743;
+}
+
+
+.tab .label {
+  color: white;
+}
+
+.tab .twisty {
+  margin-right: -1.5em;
+  opacity: 0;
+  position: relative;
+  z-index: 10000;
+}
+
+
+.closebox::after { 
+  content: "⨉";
+
+  background: none;
+  line-height: 1;
+  mask: none;
+  text-align: center;
+  width: 0.8em;
+  color: white;
+}
+
+/* As little space before the tab name as possible.
+   The fold/unfold icon is not affected. */
+.tab:not(.pinned) {
+  padding-left: 0px !important; /* !important is required when there are enough tabs to cause a scrollbar */
+}
+
+/* Change styling of pending (unloaded) tabs */
+.tab.discarded {
+  opacity: 0.5;
+}
+
+
+.tab.active {
+  background-color: #5485BF;
+}
+
