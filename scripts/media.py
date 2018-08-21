@@ -6,8 +6,7 @@ import json
 import re
 from kitchen.text.converters import to_bytes, to_unicode
 
-
-COMMANDS = ['next', 'prev', 'pause', 'play', 'seek-next', 'seek-prev',
+COMMANDS = ['next', 'prev', 'toggle', 'seek-next', 'seek-prev',
             'get-time', 'get-title', 'get-paused', 'get-player', 'get-details']
 
 if len(sys.argv) < 2:
@@ -18,16 +17,18 @@ if cmd not in COMMANDS:
     exit()
 
 socks = glob.glob('/tmp/mpsyt-*.sock')
+# x = os.popen('ps -ef | grep mpsyt').read().strip().split('\n')
+pctl = os.popen('playerctl status').read().strip()
 
-x = os.popen('ps -ef | grep mpsyt').read().strip().split('\n')
-
-if len(socks) >= 1: 
-#if len(x) > 2:
-    ## mpsyt playing
-    sock = socks[0]
-    player = 'mpsyt'
+if pctl == 'Playing' or pctl == 'Paused':
+    player = 'playerctl'
+# elif len(socks) >= 1: 
+# #if len(x) > 2:
+#     ## mpsyt playing
+#     sock = socks[0]
+#     player = 'mpsyt'
 else:
-    player = 'mpc'
+    player = 'mpd'
 
 def get_property(prop, sock):
     x = os.popen("""echo '{{ "command": ["get_property", "{}"] }}'  | socat - {}""".format(prop, sock)).read()
@@ -44,7 +45,52 @@ if cmd == 'get-player':
     print(player)
     exit()
 
-if player == 'mpsyt':
+if player == 'playerctl':
+    if cmd == 'next':
+        os.popen("playerctl next")
+    elif cmd == 'prev':
+        os.popen("playerctl previous")
+    elif cmd == 'seek-next':
+        os.popen("playerctl position 10+")
+    elif cmd == 'seek-prev':
+        os.popen("playerctl position 10-")
+    elif cmd == 'toggle':
+        os.popen("playerctl play-pause")
+    elif cmd == 'get-paused':
+        paused = os.popen('playerctl status').read().strip()
+        print(paused != 'Playing')
+    elif cmd == 'get-title':
+        title = os.popen('playerctl metadata title').read().strip()
+        title = to_unicode(title)
+        if len(sys.argv) >= 3:
+            num = int(sys.argv[2])
+            title = title[:num]
+        print(title)
+    elif cmd == 'get-details':
+        artist = os.popen('playerctl metadata artist').read().strip()
+        album = os.popen('playerctl metadata album').read().strip()
+        title = artist
+        if len(album) > 1:
+            title += "- " + album
+        title = to_unicode(title)
+        if len(sys.argv) >= 3:
+            num = int(sys.argv[2])
+            title = title[:num]
+        print(title)
+
+    elif cmd == 'get-time':
+        total = os.popen('playerctl metadata mpris:length').read().strip()
+        total = int(total)/1e6
+
+        cur = os.popen('playerctl position').read().strip()
+        cur = float(cur)
+
+        out = '{}/{}'.format(format_time(cur), format_time(total))
+
+        print(out)
+
+    
+elif player == 'mpsyt':
     if cmd == 'next':
         os.popen("echo 'keypress \">\"' | socat - {}".format(sock))
     elif cmd == 'prev':
@@ -53,7 +99,7 @@ if player == 'mpsyt':
         os.popen("echo 'seek +10' | socat - {}".format(sock))
     elif cmd == 'seek-prev':
         os.popen("echo 'seek -10' | socat - {}".format(sock))
-    elif cmd == 'pause':
+    elif cmd == 'toggle':
         os.popen("echo 'keypress \" \"' | socat - {}".format(sock))
     elif cmd == 'get-paused':
         paused = get_property('pause', sock)
@@ -88,12 +134,12 @@ if player == 'mpsyt':
         print(out)
 
 
-elif player == 'mpc':
+elif player == 'mpd':
     if cmd == 'next':
         os.popen('mpc next')
     elif cmd == 'prev':
         os.popen('mpc prev')
-    elif cmd == 'pause':
+    elif cmd == 'toggle':
         os.popen('mpc toggle')
     elif cmd == 'seek-prev':
         os.popen('mpc seek -00:00:10')
