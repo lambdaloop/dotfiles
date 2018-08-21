@@ -1,71 +1,34 @@
+
 Config {
-    -- font = "xft:Open Sans Semibold:size=9:antialias=true"
     font = "xft:DejaVu Sans:size=9:antialias=true"
-    -- font = "xft:Dina:size=6"
-    -- font = "xft:Source Code Pro:size=9:antialias=false"
-    -- "Arial:pixelsize=11,-*-*-*-R-Condensed-*-*-*-*-*-*-*-ISO8859-1"
-    -- "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
-    -- "xft:DejaVu Sans:size=8:antialias=true"
-    -- Mono:pixelsize=12,-*-*-*-R-Condensed-*-*-*-*-*-*-*-ISO8859-1"
-    -- font = "-misc-fixed-*-*-*-*-13-*-*-*-*-*-*-*"
-  , additionalFonts = ["xft:FontAwesome-9"
-                      ,"xft:Droid Sans:size=10:antialias=true:style=bold"
-                      ,"xft:Noto Sans CJK KR:size=10:antialias=true"]
-  , borderColor = "#2d2d2d" -- "#343434"-- "#1d1f21"
-  , border = NoBorder -- BottomB -- NoBorder
-  , bgColor = "#26292C" -- "#2d2d2d" -- "#272727"-- "#1d1f21" -- "#343434" -- "#3f3f3f"-- "#343434"
-  , fgColor = "#ddccaa" -- "#ddccaa"-- "#cfcfcf"
-  , textOffset = 30 --15
-  , iconOffset = 22 --9
-  , position = TopSize L 92 42
+  , additionalFonts = ["xft:FontAwesome-8", "xft:Droid Sans:size=9.5:antialias=true:style=bold", "xft:Noto Sans CJK KR:size=9.5:antialias=true"]
+  , borderColor = "#2d2d2d"
+  , border = NoBorder
+  , bgColor =  "#102235" -- "#2D3743" -- "#26292C"
+  , fgColor = "#ddccaa" -- "#e1e1e0"
+  , textOffset = 28
+  , iconOffset = 17
+  , position = TopSize L 96 42
   , lowerOnStart = True
   , commands = [ Run Date "<fn=1></fn> %A %B %d      <fn=1></fn> %H:%M" "date" 50
-               -- , Run MultiCpu ["-t", "<autototal>", "-S", "True", "-p", "2"
-               --                  ,"-L","3","-H","50","-l","lightblue","--normal","#99cc99","--high","#ff3333"]   40
-                 --                    , Run CoreTemp ["-t","Temp:<core0>C", "-L","40","-H","60","-l","lightblue","-n","gray","-h","red"] 50
-                 --                    , Run CpuFreq ["-t","<cpu0>GHz","-L","0","-H","2","-l","lightblue","-n","green","-h","red"] 50
                , Run BatteryP ["BAT0"] ["-t", "<left> (<timeleft>)", "-S", "True"
                                        ,"-L","20","-H","70"
-                                       ,"-l","#ff3333","--normal","#f0c674","--high", "#99cc99" --"#95e454"
-                                       -- ,"--","-c", "energy_full"
-                                       ] 50
-               -- , Run Volume "default" "Master" ["-t", "<status><volume>"
-               --                                 , "-S", "True"
-               --                                 , "--"
-               --                                 , "--on", "<icon=.xmonad/icons/sm4tik/xbm/spkr_01.xbm/> ", "-C", "#ddccaa" --"#f0c674"
-               --                                 , "--off", "<icon=.xmonad/icons/sm4tik/xbm/spkr_02.xbm/> "
-               --                                 ] 10
-                 -- , Run Weather "KUUU" ["-t"," <tempC>oC, <rh>% (<hour>)","-L","64","-H","77"
-                 -- ,"--normal","green","--high","red","--low","lightblue"] 36000
-
-    --               , Run Network "eth0" ["-t", "Net: <rx>u <tx>d", "-L","0","-H","32","--normal","green","--high","red"] 10
-               , Run Com "sh" ["/home/pierre/desktop_scripts/mpd_music.sh"] "music" 10
-               , Run Com "sh" ["/home/pierre/desktop_scripts/mpd_state.sh"] "musicState" 10
-               , Run Com "bash" ["/home/pierre/desktop_scripts/battery_icon.sh"] "batteryIcon" 50
-               -- , Run MPD ["-t", "<composer> <title> (<album>) <track>/<plength> <statei> "
-               --           , "--", "-P", ">>", "-Z", "|", "-S", "><"] 10
-               --                    , Run Com "sh" ["~/desktop_scripts/gmail.sh"] "gmail" 100
-               -- , Run Com "bash" ["~/desktop_scripts/trackpad-status.sh"] "trackpad" 1
-               -- , Run Kbd [("us(dvorak)", "<fc=#95e454>dv</fc>"), ("us", "<fc=#ff3333>us</fc>")]
-
-               -- , Run Wireless  "wlp3s0" ["-t", "<essid> <qualityipat>"] 50
-               -- , Run DiskU [("/", "<free>")] ["-L", "20", "-H", "50", "-m", "1"] 20
-               , Run Com "bash" ["/home/pierre/desktop_scripts/disk_usage.sh"] "disku" 50
-               -- , Run PipeReader "/tmp/xmonad.ws" "workspaces"
+                                       ,"-l","#ff3333",
+                                        "--normal","#f0c674",
+                                        "--high", "#99cc99" ] 50
+               , Run Com "sh" ["/home/pierre/scripts/mpd_music.sh"] "music" 10
+               , Run Com "sh" ["/home/pierre/scripts/mpd_state.sh"] "musicState" 10
+               , Run Com "bash" ["/home/pierre/scripts/battery_icon.sh"] "batteryIcon" 50
+               , Run Com "bash" ["/home/pierre/scripts/disk_usage.sh", "/"] "disku" 50
+               , Run Com "bash" ["/home/pierre/scripts/disk_usage.sh", "/jellyfish"] "diskjf" 50
                , Run BufferedPipeReader "musicInfo"
                          [ ( 0, False, "/tmp/xmonad.empty"  )
                          , ( 12, False, "/tmp/xmonad.music"  )
                          ]
-               -- , Run BufferedPipeReader "titleInfo"
-               --           [ ( 0, False, "/tmp/xmonad.empty2"  )
-               --           , ( 5, False, "/tmp/xmonad.title"  )
-               --           ]
-               , Run StdinReader -- window title
+               -- , Run Com "/usr/bin/python3" ["/home/pierre/scripts/get_workspaces.py"] "workspaces" 10
+               , Run PipeReader "/tmp/xmobar.ws" "workspaces"
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  -- , template = "%StdinReader% }{ %music%  %musicState%  |  %default:Master%   %batteryIcon% %battery%   <icon=.xmonad/icons/sm4tik/xbm/mem.xbm/> %disku%   <icon=.xmonad/icons/kyrylo/clock2.xbm/>  <fc=#f0b085>%date%</fc>"
-  -- , template = "%workspaces%   %music%  %musicState% %bpr% }%StdinReader%{  %batteryIcon% %battery%     <icon=/home/pierre/.xmonad/icons/sm4tik/xbm/mem.xbm/>  %disku%     <icon=.xmonad/icons/kyrylo/clock2.xbm/>  %date%"
-  -- , template = " %music%  %musicState% %bpr% }<fn=2>%StdinReader%</fn>{  %batteryIcon%  %battery%            <fn=1></fn>  %disku%            <fn=1></fn>  %date%"
-  , template = "  %date%      <fn=1></fn> %disku%       %batteryIcon% %battery%         }<fn=2>%StdinReader%</fn>{<fn=3>%musicInfo%</fn> <fn=3>%music%</fn>  %musicState% "
-  }
+  , template = "  %date%      <fn=1></fn> %diskjf%      <fn=1></fn> %disku%      %batteryIcon% %battery%}<fn=2>%workspaces%</fn>{<fn=3>%musicInfo%</fn> <fn=3>%music%</fn>  %musicState% "
+}
