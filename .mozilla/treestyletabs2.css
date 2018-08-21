@@ -3,8 +3,8 @@
     --colorB: #5A6E87;
     --colorC: #777777;
     --colorD: #00ede1;
-    --colorE: #2D3743;
-    --colorF: #2D3743;
+    --colorE: #102235;
+    --colorF: #102235;
     --colorG: green;
     --tab-height: 34px;
     --font-size: 15px;
@@ -67,10 +67,10 @@
     color: var(--colorD);
 }
 
-.tab.active .twisty
-{
-    color: var(--colorG);
-}
+/* .tab.active .twisty */
+/* { */
+/*     color: var(--colorG); */
+/* } */
 
 .tab.active {
     color: black;
