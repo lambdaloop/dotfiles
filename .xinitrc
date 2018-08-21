@@ -21,8 +21,8 @@ function two-screens
 
 
 # two-screens '' 'xrandr --output DP-1 --right-of LVDS-0 --auto --primary; xrandr --output LVDS-0 --pos 0x0'
-
-two-screens '' 'xrandr --output DP2 --primary --auto --right-of eDP1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.4 0 0 0 0.625 0 0 0 1'
+# two-screens '' 'xrandr --output DP1 --primary --auto --right-of eDP1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.4 0 0 0 0.625 0 0 0 1'
+two-screens '' 'xrandr --output DP1 --scale 2x2 --panning 5120x2880+0+0 --primary --auto --output eDP1 --off'
 
 ## HiDPI (Retina) settings
 export GDK_SCALE=0.5
@@ -63,8 +63,9 @@ export GTK_IM_MODULE='uim'
 export QT_IM_MODULE='uim'
 # export GTK_IM_MODULE_FILE=/etc/gtk-2.0/gtk.immodules
 # export GTK_IM_MODULE_FILE=/usr/lib/gtk-3.0/3.0.0/immodules.cache
-uim-xim &
 export XMODIFIERS='@im=uim'
+export UIM_CANDWIN_PROG="uim-candwin-horizontal-gtk"
+uim-xim &
 uim-toolbar-gtk3-systray &
 
 export BROWSER=firefox;
@@ -86,7 +87,10 @@ xcape -e "Control_L=Control_L|C" -t 300
 
 
 #editor
-export EDITOR="emacsclient --alternate-editor='emacs' -c"
+export EDITOR="emacsclient --alternate-editor='' -c"
+
+
+export XDG_CONFIG_HOME=~/.config
 
 #transparency
 # disabled because of the weird transparent xfce4-terminal borders
@@ -112,7 +116,9 @@ sleep 15 && dropbox &
 # gnome-keyring-daemon -s -d &
 
 # music daemon
-mpd && mpc pause &
+# mpd && mpc pause &
+mopidy &
+sleep 1 && mpc pause &
 
 thunar --daemon & #faster thunar start time
 
@@ -129,13 +135,13 @@ nm-applet &
 # emacs --daemon &
 
 # Google music
-sleep 4 && bash ~/scripts/run_gmusicproxy.sh &
+# sleep 4 && bash ~/scripts/run_gmusicproxy.sh &
 
 sleep 1 && bash ~/scripts/reset_empty_pipe.sh &
 sleep 2 && xmobar ~/.xmonad/xmobar/xmobarrc_1 &
 
 # exec ck-launch-session dbus-launch --exit-with-session xmonad
-# sleep 1 && exec xmonad
+#sleep 1 && exec xmonad
 # exec dbus-launch --exit-with-session ~/builds/remacs/src/remacs
 exec dbus-launch --exit-with-session /usr/local/bin/emacs
 # exec dbus-launch --exit-with-session emacsclient -c
