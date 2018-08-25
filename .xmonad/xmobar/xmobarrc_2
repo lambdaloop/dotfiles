@@ -8,7 +8,7 @@ Config {
   , fgColor = "#ddccaa" -- "#e1e1e0"
   , textOffset = 28
   , iconOffset = 17
-  , position = TopSize L 95 42
+  , position = TopSize L 96 42
   , lowerOnStart = True
   , commands = [ Run Date "<fn=1></fn> %A %B %d      <fn=1></fn> %H:%M" "date" 50
                , Run BatteryP ["BAT0"] ["-t", "<left> (<timeleft>)", "-S", "True"
