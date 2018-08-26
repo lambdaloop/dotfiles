@@ -103,8 +103,8 @@
     border-bottom: 1px solid black;
 }
 
-.tab.private-browsing .label:before {
-    content: "🕶";
+.tab.private-browsing {
+    color: #250f25 !important;
 }
 
 
