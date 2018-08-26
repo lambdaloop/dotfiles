@@ -3,6 +3,7 @@
 export PATH=/home/pierre/.cabal/bin:$PATH
 export PATH=/home/pierre/bin:$PATH
 export PATH=/home/pierre/.local/bin:$PATH
+export PATH=/opt/android-sdk/platform-tools:$PATH
 
 #Xresources
 xrdb -merge ~/.Xresources
@@ -22,7 +23,7 @@ function two-screens
 
 # two-screens '' 'xrandr --output DP-1 --right-of LVDS-0 --auto --primary; xrandr --output LVDS-0 --pos 0x0'
 # two-screens '' 'xrandr --output DP1 --primary --auto --right-of eDP1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.4 0 0 0 0.625 0 0 0 1'
-two-screens '' 'xrandr --output DP1 --scale 2x2 --panning 5120x2880+0+0 --primary --auto --output eDP1 --off'
+two-screens '' 'xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP1 --off'
 
 ## HiDPI (Retina) settings
 export GDK_SCALE=0.5
