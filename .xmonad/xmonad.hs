@@ -15,7 +15,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Util.EZConfig
-import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Run
 import XMonad.Util.WorkspaceCompare --(getSortByXineramaRule, getSortByTag, getSortByIndex)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -36,7 +36,7 @@ import System.Process
 -- custom modules
 import Bindings
 import Layout
-    
+import Utils (replace)    
 
 myFocusedBorderColor = "#699DD1" --  "#4d7399"-- "#b5480f" -- "#81a2be" -- "#857a66" -- "#476173" -- "#839cad" -- "#A9CDC7" -- "#CD00CD" --magenta
 myNormalBorderColor = "#2d2d2d" -- "#1d1f21" -- "#40464b"-- "#3A3A3A"-- "gray"
@@ -79,9 +79,11 @@ myConf nScreens = defaultConfig
 		, normalBorderColor = myNormalBorderColor
 		, layoutHook = myLayout
 		, handleEventHook = fullscreenEventHook
+                , keys = const (M.fromList [])
 		, workspaces = workspaceNames -- [workspaceNames, withScreens nScreens workspaceNames] !! (screenNum - 1)
                                
-		, terminal = "xfce4-terminal -e zsh" -- "gnome-terminal -e fish"
+		-- , terminal = "xfce4-terminal -e zsh" -- "gnome-terminal -e fish"
+                , terminal = "emacsclient -c -e '(eshell)'"
 		, startupHook = startupHook desktopConfig >> setWMName "LG3D"
 		}
   where (S screenNum) = nScreens
@@ -173,23 +175,26 @@ main = do
      nScreens <- countScreens
      let (S screenNum) = nScreens
      spawn "bash ~/scripts/reset_empty_pipe.sh"
+     -- spawn "bash ~/scripts/run_xmobar.sh"
+     xmobarConfig <- liftM (filter (/='\n')) $
+       runProcessWithInput "/home/pierre/scripts/get_xmobar_config.sh" [] ""
      -- xmproc <- spawnPipe $ printf "xmobar ~/.xmonad/xmobar/xmobarrc_%d" screenNum
-     xmproc <- spawnPipe $ printf "xmobar ~/.xmonad/xmobar/xmobarrc_%d" screenNum
+     xmproc <- spawnPipe $ printf "xmobar %s" xmobarConfig
      -- titleproc <- spawnPipe "rm -f /tmp/xmonad.title && mkfifo /tmp/xmonad.title && cat > /tmp/xmonad.title"
-     -- wsproc <- spawnPipe "rm -f /tmp/xmonad.ws && mkfifo /tmp/xmonad.ws && cat > /tmp/xmonad.ws"
+     -- wsproc <- spawnPipe "rm -f /tmp/xmonad.ws && mkfifo /tmp/xmonad.ws && cat >h /tmp/xmonad.ws"
      let conf = ewmh $ (myConf nScreens) {
                   logHook =
                       -- dynamicLogWithPP (customPP screenNum) {ppTitle = const "", ppOutput = hPutStrLn xmproc } >>
                       -- dynamicLogWithPP (customPP screenNum) >>
                       -- dynamicLogWithPP (customPP screenNum) {ppOutput = hPutStrLn titleproc} >>
                       dynamicLogWithPP (customPP2 screenNum) {ppOutput = hPutStrLn xmproc}
-                }
+     }
      xmonad $ fullscreenFix $
        conf { startupHook = startupHook conf >> setWMName "LG3D"}
             `additionalKeys` (myKeys conf screenNum)
 --            `additionalKeys` ratingKeys
             `additionalKeys` extraKeys
-            `additionalKeysP` myKeysP
+            `additionalKeysP` (myKeysP conf)
             `additionalMouseBindings` myMouseBindings
 
 

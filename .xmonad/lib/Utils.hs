@@ -27,16 +27,16 @@ a +& b = a ++ (' ':'&':' ':b)
 habakStr :: Int -> String
 habakStr nScreens = printf "habak %s '/home/pierre/Pictures/wallpapers/chosen/%s'" habakStretch habakFolder
   where (habakStretch, habakFolder) = case nScreens of
-		  1 -> ("-ms", "small")
-		  2 -> ("-mC", "wide")
+          1 -> ("-ms", "small")
+          2 -> ("-mC", "wide")
 
 
 changeScreenNum :: MonadIO m => Int -> m ()
 changeScreenNum screenMode = spawn str
-	where str = nvidia +&& xmonad +&& "killall trayer" +&& "sleep 0.5" +&& twoScreenStuff
-	      nvidia = printf "nvidia-settings -a 'CurrentMetaModeID=%d'" screenMode
-	      twoScreenStuff = "bash ~/desktop_scripts/twoScreenStuff.sh"
-	      xmonad = "xmonad --restart"
+    where str = nvidia +&& xmonad +&& "killall trayer" +&& "sleep 0.5" +&& twoScreenStuff
+          nvidia = printf "nvidia-settings -a 'CurrentMetaModeID=%d'" screenMode
+          twoScreenStuff = "bash ~/desktop_scripts/twoScreenStuff.sh"
+          xmonad = "xmonad --restart"
 
 
 
@@ -60,10 +60,10 @@ spawnEdit :: MonadIO m => String -> m ()
 spawnEdit file = spawn $ printf "%s %s" editor file
 
 -- myXPConfig = defaultXPConfig { fgColor = "white" --
--- 	                     , bgColor = "black"
--- 			     , borderColor = "black"
--- 			     , font = "xft:Dina:pixelsize=12,-*-*-*-R-Condensed-*-*-*-*-*-*-*-ISO8859-1"
-			     -- }
+--                          , bgColor = "black"
+--                  , borderColor = "black"
+--                  , font = "xft:Dina:pixelsize=12,-*-*-*-R-Condensed-*-*-*-*-*-*-*-ISO8859-1"
+                 -- }
 
 appendMusicFile :: MonadIO m => m ()
 appendMusicFile = spawn cmd
@@ -144,3 +144,28 @@ reallyRedrawWindows = spawn "xfce4-terminal -e '/usr/bin/sleep 0.02'"
 updateWorkspaceBar :: X ()
 updateWorkspaceBar =  spawn "/usr/bin/python3 ~/scripts/get_workspaces.py > /tmp/xmobar.ws"
 
+getFocusedTitle = withWindowSet $ \w -> do
+  t <- maybe (return "") (runQuery className) (W.peek w)
+  spawn $ printf "notify-send %s" t
+  
+replace :: Eq a => [a] -> [a] -> [a] -> [a]
+replace _ _ [] = []
+replace find repl s =
+    if take (length find) s == find
+        then repl ++ (replace find repl (drop (length find) s))
+        else [head s] ++ (replace find repl (tail s))
+
+reformatKeybinding :: String -> String
+reformatKeybinding  = replace "M" "super+alt"
+                    . replace "S" "shift"
+                    . replace "-" "+"
+                    . replace "<" ""
+                    . replace ">" ""
+                    
+forwardKey theClass key fun = withWindowSet $ \w -> do
+  t <- maybe (return "") (runQuery className) (W.peek w)
+  if t == theClass
+    then spawn $ printf "sleep 0.1; xdotool key --clearmodifiers '%s'" (reformatKeybinding key)
+    else fun
+
+forEmacs (key, fun) = (key, forwardKey "Emacs" key fun)

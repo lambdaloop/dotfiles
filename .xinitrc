@@ -133,16 +133,17 @@ nm-applet &
 
 
 
-# emacs --daemon &
+emacs --daemon &
 
 # Google music
 # sleep 4 && bash ~/scripts/run_gmusicproxy.sh &
 
 sleep 1 && bash ~/scripts/reset_empty_pipe.sh &
-sleep 2 && xmobar ~/.xmonad/xmobar/xmobarrc_1 &
+
+sleep 2; killall xmobar; bash ~/scripts/run_xmobar.sh &
 
 # exec ck-launch-session dbus-launch --exit-with-session xmonad
-#sleep 1 && exec xmonad
+sleep 1 && exec xmonad
 # exec dbus-launch --exit-with-session ~/builds/remacs/src/remacs
-exec dbus-launch --exit-with-session /usr/local/bin/emacs
+# exec dbus-launch --exit-with-session /usr/local/bin/emacs
 # exec dbus-launch --exit-with-session emacsclient -c

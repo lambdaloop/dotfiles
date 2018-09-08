@@ -26,9 +26,10 @@ Config {
                          , ( 12, False, "/tmp/xmonad.music"  )
                          ]
                -- , Run Com "/usr/bin/python3" ["/home/pierre/scripts/get_workspaces.py"] "workspaces" 10
-               , Run PipeReader "/tmp/xmobar.ws" "workspaces"
+               -- , Run PipeReader "/tmp/xmobar.ws" "workspaces"
+               , Run StdinReader
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "  %date%      <fn=1></fn> %diskjf%      <fn=1></fn> %disku%      %batteryIcon% %battery%}<fn=2>%workspaces%</fn>{<fn=3>%musicInfo%</fn> <fn=3>%music%</fn>  %musicState% "
+  , template = "  %date%      <fn=1></fn> %diskjf%      <fn=1></fn> %disku%      %batteryIcon% %battery%}<fn=2>%StdinReader%</fn>{<fn=3>%musicInfo%</fn> <fn=3>%music%</fn>  %musicState% "
 }

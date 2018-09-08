@@ -16,24 +16,31 @@ import qualified XMonad.StackSet as W
 -- import Text.Printf (printf)    
 import System.Exit
 
+import XMonad.Actions.WindowGo
+
 import Utils
 
 modm = mod3Mask
 
-myKeysP =
+myKeysP conf =
   [ ("M-S-<Backspace>", spawn "xmonad --recompile; xmonad --restart")
   , ("M-<Backspace>", spawn "xmonad --restart")
-  , ("M-S-<Space>", sendMessage FirstLayout)
+  -- , ("M-S-<Space>", sendMessage FirstLayout)
+  -- , ("M-<Space>", sendMessage NextLayout)
+  , ("M-<Return>", windows W.swapMaster)
+  , forEmacs ("M-S-<Return>", spawn $ XMonad.terminal conf)
     --, ("M-i", notiSpawn "Google Chrome" "google-chrome")
   -- , ("M-i", spawn "firefox-aurora")
   -- , ("M-S-i", spawn "chromium")
-  , ("M-i", spawn "firefox")
+  , ("M-i", runOrRaise "firefox" (className =? "Firefox"))
   , ("M-S-i", spawn "conkeror")
-  , ("M-e", spawn editor)
+  , forEmacs ("M-e", spawn editor)
   , ("M-C-e", spawn "emacs")
   , ("M-S-e", spawn "killall emacs; emacs --daemon; emacsclient -c")
 
-  , ("M-r", spawn "anki")
+  -- , ("M-r", spawn "anki")
+  -- , ("M-r", getFocusedTitle)
+  -- , forEmacs ("M-r", spawn "notify-send test")
     
   , ("M-j", spawnEdit journalFile)
   , ("M-g", spawnEdit notesFile)
@@ -43,12 +50,12 @@ myKeysP =
   , ("M-S-u", sendMessage MirrorExpand)
   , ("M-a", sendMessage Shrink)
   , ("M-u", sendMessage Expand)
-  , ("M-f", sendMessage ToggleStruts)
+  -- , ("M-f", sendMessage ToggleStruts)
   , ("M-C-l", spawn "slimlock") -- "xlock -echokeys -echokey '*'"
 --  , ("M-s", spawn "xscreensaver-command -lock && systemctl suspend")  -- "xlock -startCmd 'sudo pm-suspend' -mode blank -echokeys -echokey '*'"
   , ("M-S-C-s", spawn "systemctl suspend")
-  , ("M-S-o", shiftNextScreen)
-  , ("M-o", nextScreen)
+--  , ("M-S-o", shiftNextScreen)
+--  , ("M-o", nextScreen)
   , ("M-y", swapNextScreen)
   , ("M-h", windows W.focusDown)
   , ("M-t", windows W.focusUp)
@@ -83,7 +90,7 @@ myKeysP =
 --  , ("M-/", changeScreenNum 50) --left screen
 --  , ("M-@", changeScreenNum 51) --two screens
 --  , ("M-\\", changeScreenNum 52) -- right screen
-  , ("M-k", spawn "evince ~/Dropbox/reading/current.pdf")
+  -- , ("M-k", spawn "evince ~/Dropbox/reading/current.pdf")
 
     --left screen
   , ("M-/", spawn "xrandr --output DP1 --off --auto --output eDP1 --primary --auto; killall trayer; xmonad --restart; bash ~/scripts/twoScreenStuff.sh;")
@@ -146,7 +153,7 @@ myKeysP =
   
   , ("<XF86AudioPrev>", spawn "python ~/scripts/media.py prev")
   , ("<XF86AudioNext>", spawn "python ~/scripts/media.py next")
-  , ("<XF86AudioPlay>", spawn "python ~/scripts/media.py pause")
+  , ("<XF86AudioPlay>", spawn "python ~/scripts/media.py toggle")
 
   , ("M-<XF86AudioPlay>", spawn "python ~/scripts/media.py get-details > /tmp/xmonad.music")
   , ("M-<XF86AudioNext>", spawn "mpc random")
@@ -202,14 +209,14 @@ myKeysP =
   -- , ("M-C-<Up>", sendMessage $ MoveSplit U)
  ]
 
-extraKeys :: [((ButtonMask, KeySym), X ())]
-extraKeys = [((0, xK_Alt_R), spawn "bash ~/scripts/switchLayouts.sh")
+--extraKeys :: [((ButtonMask, KeySym), X ())]
+--extraKeys = [((0, xK_Alt_R), spawn "bash ~/scripts/switchLayouts.sh")
             -- , ((0, xK_Super_R), spawn "sleep 0.05 && xdotool click 3; echo click >> /tmp/clicks")
-            ]
+--            ]
 -- extraKeys = [
 --  ((0 :: ButtonMask, xK_Alt_R), (spawn "sleep 0.1 && xdotool click 3") :: X ())
 --             ]
--- extraKeys = []
+extraKeys = []
 
 dvpUpKeys = [ xK_ampersand, xK_bracketleft, xK_braceleft, xK_braceright
             , xK_parenleft, xK_equal, xK_asterisk, xK_parenright, xK_plus, xK_bracketright ]
@@ -220,12 +227,12 @@ leftMostKey = xK_grave -- idk for dvp
 
 upKeys = normalUpKeys ++ [zeroKey]
 
-myKeys conf 1 = [((m .|. modm, k), sequence_ [windows $ f i, act i, updateWorkspaceBar])
+myKeys conf 1 = [((m .|. modm, k), sequence_ [windows $ f i, act i])
                    | (i, k) <- zip (XMonad.workspaces conf) upKeys
                    , (f, m, act) <- [ (W.greedyView, 0, \i -> changeWorkspaceBackground i) -- >> redrawWindows)
                                                     , (W.shift, shiftMask, const (return ()) )]]
 
-myKeys conf 2 = [((m .|. modm, k), sequence_ [windows $ f i, act, updateWorkspaceBar])
+myKeys conf 2 = [((m .|. modm, k), sequence_ [windows $ f i, act])
                    | (i, k) <- zip (XMonad.workspaces conf) upKeys
                    , (f, m, act) <- [(W.greedyView, 0, return ()) -- redrawWindows)
                                                     ,(W.shift, shiftMask, return ())]]
