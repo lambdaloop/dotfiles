@@ -8,9 +8,9 @@ remove control = Control_L
 keycode 66 = Control_L
 keycode 134 = Alt_R Meta_R
 
-remove mod1 = Alt_L
-keycode 64 = Alt_L
-keysym Alt_L = Super_L
+! remove mod1 = Alt_L
+! keycode 64 = Alt_L
+! keysym Alt_L = Super_L
 
 add control = Control_L
 add mod3 = Super_L Hyper_L
