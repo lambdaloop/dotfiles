@@ -25,6 +25,8 @@ function three-modes
 }
 
 
-three-modes 'habak -ms "/home/pierre/Pictures/wallpapers/chosen/small-filled"' \
-            'habak -ms "/home/pierre/Pictures/wallpapers/chosen/wide-filled"' &
+# three-modes 'habak -ms "/home/pierre/Pictures/wallpapers/chosen/small-filled"' \
+#             'habak -ms "/home/pierre/Pictures/wallpapers/chosen/wide-filled"' &
 
+
+habak -ms "/home/pierre/Pictures/wallpapers/chosen/small-filled"
