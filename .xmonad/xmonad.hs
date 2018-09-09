@@ -39,7 +39,7 @@ import Layout
 import Utils (replace)    
 
 myFocusedBorderColor = "#699DD1" --  "#4d7399"-- "#b5480f" -- "#81a2be" -- "#857a66" -- "#476173" -- "#839cad" -- "#A9CDC7" -- "#CD00CD" --magenta
-myNormalBorderColor = "#2d2d2d" -- "#1d1f21" -- "#40464b"-- "#3A3A3A"-- "gray"
+myNormalBorderColor = "#102235" -- "#2d2d2d" -- "#1d1f21" -- "#40464b"-- "#3A3A3A"-- "gray"
 myBorderWidth = 5 -- pixels
 
 workspaceNames = map show ([1..9] ++ [0])
@@ -153,7 +153,7 @@ customPP nScreens = xmobarPP {
 customPP2 :: Int -> PP
 customPP2 nScreens = xmobarPP {
            -- ppCurrent = xmobarColor "#e5e8e6" "" . wrap "[" "]" . prettyName
-           ppCurrent = xmobarColor "#c84c00" "" . formatAll -- #c84c00 -- #5294e2
+           ppCurrent = xmobarColor "#e67128" "" . formatAll -- #c84c00 -- #5294e2
 	 , ppLayout = const ""
 	 , ppSep =  "" -- "<fc=#AFAF87> :: </fc>"
          , ppWsSep = if nScreens == 1 then "  " else "   "

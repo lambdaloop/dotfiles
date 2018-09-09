@@ -17,10 +17,29 @@ import qualified XMonad.StackSet as W
 import System.Exit
 
 import XMonad.Actions.WindowGo
+import XMonad.Actions.WindowBringer
+
+import XMonad.Util.NamedWindows (getName)
+import Text.Printf (printf)
 
 import Utils
 
 modm = mod3Mask
+
+myWindowTitler ws w = do
+  wClass <- runQuery className w
+  wName <- runQuery title w
+  return $ printf "%s  --  %s [%s]" wClass wName (W.tag ws)
+
+
+myWindowBringerConfig :: WindowBringerConfig
+myWindowBringerConfig = def
+  { menuCommand="rofi"
+  , menuArgs = ["-dmenu", "-i", "-l", "10",
+                "-font", "Noto Sans 21",
+                "-p", "window"]
+  , windowTitler = myWindowTitler
+  }
 
 myKeysP conf =
   [ ("M-S-<Backspace>", spawn "xmonad --recompile; xmonad --restart")
@@ -38,6 +57,7 @@ myKeysP conf =
   , ("M-C-e", spawn "emacs")
   , ("M-S-e", spawn "killall emacs; emacs --daemon; emacsclient -c")
 
+  , ("M-u", spawn "python3 ~/scripts/launch_common.py")
   -- , ("M-r", spawn "anki")
   -- , ("M-r", getFocusedTitle)
   -- , forEmacs ("M-r", spawn "notify-send test")
@@ -46,10 +66,10 @@ myKeysP conf =
   , ("M-g", spawnEdit notesFile)
   --, ("M-o", notiSpawn "Xournal" "xournal")
   --, ("M-d", spawn "xjump")
-  , ("M-S-a", sendMessage MirrorShrink)
-  , ("M-S-u", sendMessage MirrorExpand)
-  , ("M-a", sendMessage Shrink)
-  , ("M-u", sendMessage Expand)
+  , ("M-S-<Down>", sendMessage MirrorShrink)
+  , ("M-S-<Up>", sendMessage MirrorExpand)
+  , ("M-S-<Left>", sendMessage Shrink)
+  , ("M-S-<Right>", sendMessage Expand)
   -- , ("M-f", sendMessage ToggleStruts)
   , ("M-C-l", spawn "slimlock") -- "xlock -echokeys -echokey '*'"
 --  , ("M-s", spawn "xscreensaver-command -lock && systemctl suspend")  -- "xlock -startCmd 'sudo pm-suspend' -mode blank -echokeys -echokey '*'"
@@ -62,6 +82,10 @@ myKeysP conf =
   , ("M-S-h", windows W.swapDown)
   , ("M-S-t", windows W.swapUp)
 
+  -- , ("M-b", windowPrompt def {font = "-*-dejavu sans-medium-r-normal--*-200-*-*-*-*-iso10646-1", height= 50}
+  --     Bring allWindows)
+  , ("M-S-<Space>", gotoMenuConfig myWindowBringerConfig)
+  
   -- , ("M-v", moveWS Prev)
   -- , ("M-z", moveWS Next)
   , ("M-z", spawn "zotero")
@@ -103,7 +127,7 @@ myKeysP conf =
   , ("M-C-=", spawn "xrandr --output HDMI2 --auto --right-of eDP1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; bash ~/scripts/twoScreenStuff.sh")
   , ("M-C-/", spawn "xrandr --output HDMI2 --off --auto; xmonad --restart; bash ~/scripts/twoScreenStuff.sh")
     
-  , ("M-\\", spawn "xrandr --output DP1 --scale 2x2 --panning 3840x2160+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart") 
+  , ("M-\\", spawn "xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart") 
   , ("M-S-\\", spawn "xrandr --output DP-1 --rotate normal")
   , ("M-C-\\", spawn "xrandr --output HDMI2 --scale 2x2 --panning 3840x2160+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart") 
     
@@ -181,8 +205,8 @@ myKeysP conf =
 
   -- , ("M-<Tab>", goToSelected defaultGSConfig)
 
-  , ("M-b", spawn "bash ~/scripts/book_menu.sh")
-  , ("M-S-b", spawnEdit "~/Dropbox/org/books.org")
+  -- , ("M-b", spawn "bash ~/scripts/book_menu.sh")
+  -- , ("M-S-b", spawnEdit "~/Dropbox/org/books.org")
 
   , ("M-C-p", spawn "mpv $(xclip -o)")
 
@@ -209,11 +233,10 @@ myKeysP conf =
   -- , ("M-C-<Up>", sendMessage $ MoveSplit U)
  ]
 
---extraKeys :: [((ButtonMask, KeySym), X ())]
---extraKeys = [((0, xK_Alt_R), spawn "bash ~/scripts/switchLayouts.sh")
-            -- , ((0, xK_Super_R), spawn "sleep 0.05 && xdotool click 3; echo click >> /tmp/clicks")
+-- extraKeys :: [((ButtonMask, KeySym), X ())]
+-- extraKeys = [((0, xK_Alt_R), spawn "bash ~/scripts/switchLayouts.sh")
+--             -- , ((0, xK_Super_R), spawn "sleep 0.05 && xdotool click 3; echo click >> /tmp/clicks")
 --            ]
--- extraKeys = [
 --  ((0 :: ButtonMask, xK_Alt_R), (spawn "sleep 0.1 && xdotool click 3") :: X ())
 --             ]
 extraKeys = []
