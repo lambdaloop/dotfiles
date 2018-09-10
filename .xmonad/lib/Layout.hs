@@ -4,7 +4,6 @@ import XMonad
 
 
 import XMonad.Layout.Accordion
--- import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.Circle
 import XMonad.Layout.Cross
 import XMonad.Layout.Spiral
@@ -18,7 +17,6 @@ import XMonad.Layout.NoBorders
 
 import XMonad.Layout.ComboP
 import XMonad.Layout.ResizableTile
--- import XMonad.Layout.MagicFocus
 import XMonad.Layout.NoBorders
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.IM
@@ -26,7 +24,6 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Spacing
 import XMonad.Layout.SimplestFloat
 import XMonad.Layout.Tabbed
---import XMonad.Layout.TabBarDecoration
 import XMonad.Layout.TwoPane
 import XMonad.Layout.Reflect
 import XMonad.Layout.Grid
@@ -60,7 +57,7 @@ imListRatio = 1%6
 
 myLayout =  lessBorders (Combine Union Screen OtherIndicated) . avoidStruts $
                    onWorkspaces ["0", "0_0", "1_0"] experimentalLayout $
-		   onWorkspaces ["8", "0_8", "1_8"] (gimpLayout ||| normalLayout) $
+		   -- onWorkspaces ["8", "0_8", "1_8"] (gimpLayout ||| normalLayout) $
                    onWorkspaces ["6", "0_6", "1_6"] (imLayout ||| normalLayout) $
 		   -- tiled ||| Mirror tiled ||| Full ||| simplestFloat
                    normalLayout
@@ -111,9 +108,6 @@ myManageHook = composeAll
 			  , className =? "Pinentry" --> doCenterFloat
 				--               , resource =? "Gimp-2.6" --> doFloat
 			  , className =? "Gimp" --> doFloat
-			  -- , className =? "Gnome-terminal" --> doF (W.swapDown)
-			  -- , className =? "Xfce4-terminal" --> doF (W.swapDown)
-			  -- , className =? "Emacs" --> doF (W.swapDown)
 			  , className =? "Tilem" --> doFloat
                           , className =? "sun-awt-X11-XFramePeer" --> doFloat
                           , className =? "com-mathworks-util-PostVMInit" --> doFloat

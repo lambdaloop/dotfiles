@@ -17,10 +17,6 @@ notiSpawn noti cmd = spawn $ printf "notify-send '%s' -t 2000 && %s" noti cmd
 
 notiLSpawn noti = notiSpawn $ "Launching: "++noti
 
---appStr app = "kioclient exec /usr/share/applications/" ++ app ++ ".desktop"
-
---notiApp noti app = notiSpawn noti $ appStr app
-
 a +&& b = a ++ (' ':'&':'&':' ':b)
 a +& b = a ++ (' ':'&':' ':b)
 
@@ -58,12 +54,6 @@ editor = "emacsclient --alternate-editor='emacs' -c"
 
 spawnEdit :: MonadIO m => String -> m ()
 spawnEdit file = spawn $ printf "%s %s" editor file
-
--- myXPConfig = defaultXPConfig { fgColor = "white" --
---                          , bgColor = "black"
---                  , borderColor = "black"
---                  , font = "xft:Dina:pixelsize=12,-*-*-*-R-Condensed-*-*-*-*-*-*-*-ISO8859-1"
-                 -- }
 
 appendMusicFile :: MonadIO m => m ()
 appendMusicFile = spawn cmd
@@ -131,22 +121,6 @@ changeWorkspaceBackground name = spawn command
     where command = printf "habak -ms ~/Pictures/wallpapers/chosen/small-desktops/%s" name
 
 bookPath = "/home/pierre/Dropbox/reading/current"
-
-redrawWindows :: X ()
-redrawWindows = withFocused (\w ->  (fmap show $ getName w) >>= \title -> if (isInfixOf "emacs" title) then reallyRedrawWindows else return () )
-
-reallyRedrawWindows :: X ()
-reallyRedrawWindows = spawn "xfce4-terminal -e '/usr/bin/sleep 0.02'"
-
--- redrawWindows = spawn "/usr/bin/sleep 0.05"
--- redrawWindows = withFocused (windows . ((flip W.float) (W.RationalRect 0 40 2500 1500))) >> withFocused (windows . W.sink) >> rescreen
-
-updateWorkspaceBar :: X ()
-updateWorkspaceBar =  spawn "/usr/bin/python3 ~/scripts/get_workspaces.py > /tmp/xmobar.ws"
-
-getFocusedTitle = withWindowSet $ \w -> do
-  t <- maybe (return "") (runQuery className) (W.peek w)
-  spawn $ printf "notify-send %s" t
   
 replace :: Eq a => [a] -> [a] -> [a] -> [a]
 replace _ _ [] = []
