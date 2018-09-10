@@ -16,7 +16,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
-import XMonad.Util.WorkspaceCompare --(getSortByXineramaRule, getSortByTag, getSortByIndex)
+import XMonad.Util.WorkspaceCompare
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import qualified System.IO
@@ -36,10 +36,10 @@ import System.Process
 -- custom modules
 import Bindings
 import Layout
-import Utils (replace)    
+import Utils (replace)
 
-myFocusedBorderColor = "#699DD1" --  "#4d7399"-- "#b5480f" -- "#81a2be" -- "#857a66" -- "#476173" -- "#839cad" -- "#A9CDC7" -- "#CD00CD" --magenta
-myNormalBorderColor = "#102235" -- "#2d2d2d" -- "#1d1f21" -- "#40464b"-- "#3A3A3A"-- "gray"
+myFocusedBorderColor = "#699DD1"
+myNormalBorderColor = "#102235"
 myBorderWidth = 5 -- pixels
 
 workspaceNames = map show ([1..9] ++ [0])
@@ -70,103 +70,60 @@ setSupportedWithFullscreen = withDisplay $ \dpy -> do
                          ]
     io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
 
-                  
+
 myConf nScreens = defaultConfig
-		{ modMask = mod3Mask
+                { modMask = mod3Mask
                 , borderWidth = myBorderWidth
-		, manageHook = newManageHook
-		, focusedBorderColor = myFocusedBorderColor
-		, normalBorderColor = myNormalBorderColor
-		, layoutHook = myLayout
-		, handleEventHook = fullscreenEventHook
+                , manageHook = newManageHook
+                , focusedBorderColor = myFocusedBorderColor
+                , normalBorderColor = myNormalBorderColor
+                , layoutHook = myLayout
+                , handleEventHook = fullscreenEventHook
                 , keys = const (M.fromList [])
-		, workspaces = workspaceNames -- [workspaceNames, withScreens nScreens workspaceNames] !! (screenNum - 1)
-                               
-		-- , terminal = "xfce4-terminal -e zsh" -- "gnome-terminal -e fish"
+                , workspaces = workspaceNames -- [workspaceNames, withScreens nScreens workspaceNames] !! (screenNum - 1)
                 , terminal = "emacsclient -c -e '(eshell)'"
-		, startupHook = startupHook desktopConfig >> setWMName "LG3D"
-		}
+                , startupHook = startupHook desktopConfig >> setWMName "LG3D"
+                }
   where (S screenNum) = nScreens
 
 
 
 screenNames = [">", "<"]
 
--- prettyName s    -- | name /= "" = (replicate id '&') ++ name
--- 	| name /= "" = name
--- 	| otherwise = show id
--- 	where (S id, name) = unmarshall s
-
 prettyNameN n s
     | name /= "" && (n > 1) = name
     | name /= "" = ""
     | otherwise = show id
     where (S id, name) = unmarshall s
-                             
-                             
+
+
 sortName s
     | name /= "" = (screenNames !! id) ++ name
     | otherwise = if id == 0 then "99" else (show id)
     where (S id, nameX) = unmarshall s
           name = if nameX == "0" then "99" else nameX -- place 0 after 9 to match keyboard
-          
+
 
 mySort = mkWsSort (return cmp)
    where cmp a b = compare (sortName a) (sortName b)
 
--- customPP :: Int -> PP
--- customPP nScreens = xmobarPP {
---            -- ppCurrent = xmobarColor "#e5e8e6" "" . wrap "[" "]" . prettyName
---            ppCurrent = xmobarColor "#c84c00" "" . formatAll
--- 	 , ppLayout = xmobarColor "#F0E68C" "" . shorten 20
--- 	 , ppSep =  "   " -- "<fc=#AFAF87> :: </fc>"
---          , ppWsSep = ""
--- 	 , ppHiddenNoWindows = xmobarColor "#434343" "" . format
--- 	 , ppHidden = formatAll
--- 	 -- , ppVisible = wrap "(" ")" . prettyName
--- 	 , ppVisible = xmobarColor "#e5a59c" "" . formatAll
--- 	 -- , ppUrgent = xmobarColor "#ff0000" "" . wrap "!" "!" . xmobarStrip -- this has not occured in 4+ years of xmonad usage
--- 	 , ppSort = mySort --getSortByTag
--- 	 , ppTitle =  ((replicate 5 ' ') ++) . shorten (nScreens * 30 + 70) . cleanUp . xmobarStrip -- xmobarColor "#00ff74" "" . cleanUp -- . shorten (screenNum * 75)
--- 	 }
---       where format = prettyNameN nScreens
---             formatAll = if (nScreens == 1) then id else format
+
 
 customPP :: Int -> PP
 customPP nScreens = xmobarPP {
-           -- ppCurrent = xmobarColor "#e5e8e6" "" . wrap "[" "]" . prettyName
-           ppCurrent = const ""
-	 , ppLayout = const "" -- ("  " ++) . xmobarColor "#F0E68C" "" . shorten 20
-	 , ppSep =  "" -- "<fc=#AFAF87> :: </fc>"
-         , ppWsSep = ""
-	 , ppHiddenNoWindows = const ""
-	 , ppHidden = const ""
-	 -- , ppVisible = wrap "(" ")" . prettyName
-	 , ppVisible = const ""
-	 -- , ppUrgent = xmobarColor "#ff0000" "" . wrap "!" "!" . xmobarStrip -- this has not occured in 4+ years of xmonad usage
-	 , ppSort = mySort --getSortByTag
-	 , ppTitle =  (" " ++) . shorten (nScreens * 30 + 60) . cleanUp . xmobarStrip -- xmobarColor "#00ff74" "" . cleanUp -- . shorten (screenNum * 75)
-	 }
+           ppCurrent = xmobarColor "#e67128" "" . formatAll
+         , ppLayout = const ""
+         , ppSep =  ""
+         , ppWsSep = if nScreens == 1 then "  " else "   "
+         , ppHiddenNoWindows = xmobarColor "#606060" "" . formatAll
+         , ppHidden = formatAll
+         , ppVisible = xmobarColor "#e5a59c" "" . formatAll -- #e5a59c -- a9abb8
+         -- , ppUrgent = xmobarColor "#ff0000" "" . wrap "!" "!" . xmobarStrip -- this has not occured in 4+ years of xmonad usage
+         , ppSort = mySort
+         , ppTitle =  const ""
+         }
       where format = prettyNameN nScreens
             formatAll = id -- if (nScreens == 1) then id else format
-
-customPP2 :: Int -> PP
-customPP2 nScreens = xmobarPP {
-           -- ppCurrent = xmobarColor "#e5e8e6" "" . wrap "[" "]" . prettyName
-           ppCurrent = xmobarColor "#e67128" "" . formatAll -- #c84c00 -- #5294e2
-	 , ppLayout = const ""
-	 , ppSep =  "" -- "<fc=#AFAF87> :: </fc>"
-         , ppWsSep = if nScreens == 1 then "  " else "   "
-	 , ppHiddenNoWindows = xmobarColor "#606060" "" . formatAll
-	 , ppHidden = formatAll
-	 -- , ppVisible = wrap "(" ")" . prettyName
-	 , ppVisible = xmobarColor "#e5a59c" "" . formatAll -- #e5a59c -- a9abb8
-	 -- , ppUrgent = xmobarColor "#ff0000" "" . wrap "!" "!" . xmobarStrip -- this has not occured in 4+ years of xmonad usage
-	 , ppSort = mySort --getSortByTag
-	 , ppTitle =  const ""
-	 }
-      where format = prettyNameN nScreens
-            formatAll = id -- if (nScreens == 1) then id else format            
 
 cleanUp = filter (not . (`elem` "{}"))
 
@@ -175,29 +132,15 @@ main = do
      nScreens <- countScreens
      let (S screenNum) = nScreens
      spawn "bash ~/scripts/reset_empty_pipe.sh"
-     -- spawn "bash ~/scripts/run_xmobar.sh"
      xmobarConfig <- liftM (filter (/='\n')) $
        runProcessWithInput "/home/pierre/scripts/get_xmobar_config.sh" [] ""
-     -- xmproc <- spawnPipe $ printf "xmobar ~/.xmonad/xmobar/xmobarrc_%d" screenNum
      xmproc <- spawnPipe $ printf "xmobar %s" xmobarConfig
-     -- titleproc <- spawnPipe "rm -f /tmp/xmonad.title && mkfifo /tmp/xmonad.title && cat > /tmp/xmonad.title"
-     -- wsproc <- spawnPipe "rm -f /tmp/xmonad.ws && mkfifo /tmp/xmonad.ws && cat >h /tmp/xmonad.ws"
      let conf = ewmh $ (myConf nScreens) {
-                  logHook =
-                      -- dynamicLogWithPP (customPP screenNum) {ppTitle = const "", ppOutput = hPutStrLn xmproc } >>
-                      -- dynamicLogWithPP (customPP screenNum) >>
-                      -- dynamicLogWithPP (customPP screenNum) {ppOutput = hPutStrLn titleproc} >>
-                      dynamicLogWithPP (customPP2 screenNum) {ppOutput = hPutStrLn xmproc}
+                  logHook = dynamicLogWithPP (customPP screenNum) {ppOutput = hPutStrLn xmproc}
      }
      xmonad $ fullscreenFix $
        conf { startupHook = startupHook conf >> setWMName "LG3D"}
             `additionalKeys` (myKeys conf screenNum)
---            `additionalKeys` ratingKeys
             `additionalKeys` extraKeys
             `additionalKeysP` (myKeysP conf)
             `additionalMouseBindings` myMouseBindings
-
-
-
-
-
