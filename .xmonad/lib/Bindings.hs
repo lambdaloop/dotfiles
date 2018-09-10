@@ -44,14 +44,15 @@ myWindowBringerConfig = def
 myKeysP conf =
   [ ("M-S-<Backspace>", spawn "xmonad --recompile; xmonad --restart")
   , ("M-<Backspace>", spawn "xmonad --restart")
-  -- , ("M-S-<Space>", sendMessage FirstLayout)
-  -- , ("M-<Space>", sendMessage NextLayout)
+  , ("M-S-'", sendMessage FirstLayout)
+  , ("M-'", sendMessage NextLayout)
   , ("M-<Return>", windows W.swapMaster)
   , forEmacs ("M-S-<Return>", spawn $ XMonad.terminal conf)
     --, ("M-i", notiSpawn "Google Chrome" "google-chrome")
   -- , ("M-i", spawn "firefox-aurora")
   -- , ("M-S-i", spawn "chromium")
   , ("M-i", runOrRaise "firefox" (className =? "Firefox"))
+  , ("M-s", raiseMaybe (spawn "spotify --force-device-scale-factor=2") (className =? "Spotify"))
   , ("M-S-i", spawn "conkeror")
   , forEmacs ("M-e", spawn editor)
   , ("M-C-e", spawn "emacs")
@@ -85,6 +86,7 @@ myKeysP conf =
   -- , ("M-b", windowPrompt def {font = "-*-dejavu sans-medium-r-normal--*-200-*-*-*-*-iso10646-1", height= 50}
   --     Bring allWindows)
   , ("M-S-<Space>", gotoMenuConfig myWindowBringerConfig)
+  , ("M-b", bringMenuConfig myWindowBringerConfig)
   
   -- , ("M-v", moveWS Prev)
   -- , ("M-z", moveWS Next)
@@ -99,7 +101,8 @@ myKeysP conf =
     --  , ("M-m", appendFilePrompt myXPConfig "/home/pierre/Dropbox/time_log.txt")
   , ("M-S-p", spawn "bash ~/scripts/pick_music.sh")
   -- , ("M-r", spawn "bash ~/scripts/pick_radio.sh")
-  , ("M-S-r", spawn "bash ~/scripts/pick_password.sh")
+--  , ("M-S-r", spawn "bash ~/scripts/pick_password.sh")
+  , ("M-S-r", spawn "passmenu -b -fn 'Noto Sans 20' -l 10")
   , ("M-c", spawn "bash ~/scripts/pick_google_music.sh")
   , ("M-S-c", spawn "bash ~/scripts/pick_google_music_title.sh")
   -- , ("M-S-m", spawn "geary")
@@ -107,7 +110,7 @@ myKeysP conf =
   -- , ("M-S-m", spawn "xfce4-terminal -e 'env TERM=xterm-256color mutt'")
   --  , ("M-f", appendFilePrompt myXPConfig "/home/pierre/Dropbox/NOTES")
   --  , ("M-f", appendMusicFile)
-  , ("M-S-w", notiSpawn "Windows XP" "virtualbox --startvm XP")
+  -- , ("M-S-w", notiSpawn "Windows XP" "virtualbox --startvm XP")
   -- , ("M-S-w", spawn "notify-send \"$(bash ~/scripts/weather.sh)\"")
   , ("M-q", kill)
   , ("M-S-C-q", io (exitWith ExitSuccess))
@@ -146,7 +149,7 @@ myKeysP conf =
   -- , ("M-d", spawn "thunar")
   -- , ("M-d", spawn "xfce4-terminal -e '/usr/bin/touch'") -- for resizing emacs
     
-  , ("M-d", withFocused ((flip  tileWindow) (Rectangle 0 0 2560 1500)) >> withFocused (windows . W.sink) )
+  , ("M-S-n", withFocused ((flip  tileWindow) (Rectangle 0 0 2560 1500)) >> withFocused (windows . W.sink) )
       
   -- , ("M-c", spawn "mcomix")
   , ("M-v", spawn "bash ~/scripts/take_screenshot.sh")
@@ -213,7 +216,7 @@ myKeysP conf =
   , ("C-S-1", spawn "xmodmap ~/.xmodmap; xkbset r m; notify-send 'put back keybindings'")
   , ("C-S-2", spawn "bash ~/scripts/switchLayouts.sh; notify-send 'switched layout'")
 
-  , ("M-m", spawn "bash ~/scripts/toggle_russian.sh")
+  , ("M-r", spawn "bash ~/scripts/toggle_russian.sh")
 
   -- , ("M-S-m", spawn "sleep 0.5 && xdotool key --clearmodifiers Hangul_Hanja")
     -- BSP bindings
