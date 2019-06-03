@@ -62,7 +62,7 @@ myKeysP conf =
   , ("M-S-C-q", io (exitWith ExitSuccess))
 
   {- RUNNING PROGRAMS -}
-  , forEmacs ("M-S-<Return>", spawn $ XMonad.terminal conf)
+  , ("M-S-<Return>", spawn $ XMonad.terminal conf)
   , ("M-i", runOrRaise "firefox" (className =? "Firefox"))
   , ("M-s", raiseMaybe (spawn "spotify --force-device-scale-factor=2") (className =? "Spotify"))
   , ("M-S-i", spawn "conkeror")

@@ -81,7 +81,8 @@ myConf nScreens = defaultConfig
                 , handleEventHook = fullscreenEventHook
                 , keys = const (M.fromList [])
                 , workspaces = workspaceNames -- [workspaceNames, withScreens nScreens workspaceNames] !! (screenNum - 1)
-                , terminal = "emacsclient -c -e '(eshell)'"
+                -- , terminal = "emacsclient -c -e '(eshell)'"
+                , terminal = "/bin/xfce4-terminal -e '/bin/zsh'"
                 , startupHook = startupHook desktopConfig >> setWMName "LG3D"
                 }
   where (S screenNum) = nScreens
