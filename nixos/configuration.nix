@@ -21,7 +21,7 @@ in
   networking.hostName = "europa"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;
-  
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -41,7 +41,7 @@ in
   environment.systemPackages = with pkgs; [
      dmenu
      emacs
-     firefox 
+     firefox
      gitAndTools.gitFull
      glxinfo
      gparted
@@ -72,7 +72,7 @@ in
      numix-cursor-theme
    ];
 
-  
+
   nixpkgs.config = {
     allowUnfree = true;
     firefox = {
@@ -167,7 +167,7 @@ in
 
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.xmonad.enableContribAndExtras = true;
-      
+
   services.gnome3.gnome-keyring.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -201,6 +201,5 @@ in
      fsType = "vfat";
      #    options = [ "rw" "data=ordered" "relatime" ];
    };
-   
-}
 
+}
