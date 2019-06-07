@@ -3,7 +3,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.Submap
 import XMonad.Actions.GridSelect
 import XMonad.Actions.MouseGestures
-import XMonad.Config.Gnome
+import XMonad.Config.Kde
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
@@ -71,7 +71,7 @@ setSupportedWithFullscreen = withDisplay $ \dpy -> do
     io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
 
 
-myConf nScreens = defaultConfig
+myConf nScreens = kdeConfig
                 { modMask = mod3Mask
                 , borderWidth = myBorderWidth
                 , manageHook = newManageHook
@@ -82,8 +82,9 @@ myConf nScreens = defaultConfig
                 , keys = const (M.fromList [])
                 , workspaces = workspaceNames -- [workspaceNames, withScreens nScreens workspaceNames] !! (screenNum - 1)
                 -- , terminal = "emacsclient -c -e '(eshell)'"
-                , terminal = "/bin/xfce4-terminal -e '/bin/zsh'"
-                , startupHook = startupHook desktopConfig >> setWMName "LG3D"
+                , terminal = "konsole --hide-menubar"
+                --, terminal = "/bin/xfce4-terminal -e '/bin/zsh'"
+                , startupHook = startupHook kdeConfig >> setWMName "LG3D"
                 }
   where (S screenNum) = nScreens
 
@@ -137,7 +138,7 @@ main = do
        runProcessWithInput "/home/pierre/scripts/get_xmobar_config.sh" [] ""
      xmproc <- spawnPipe $ printf "xmobar %s" xmobarConfig
      let conf = ewmh $ (myConf nScreens) {
-                  logHook = dynamicLogWithPP (customPP screenNum) {ppOutput = hPutStrLn xmproc}
+                 logHook = dynamicLogWithPP (customPP screenNum) {ppOutput = hPutStrLn xmproc}
      }
      xmonad $ fullscreenFix $
        conf { startupHook = startupHook conf >> setWMName "LG3D"}
