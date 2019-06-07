@@ -4,10 +4,6 @@
 
 { config, pkgs, ... }:
 
-let
-  at-home-evdev = pkgs.callPackage ./pkgs/at-home-modifier-evdev.nix { };
-
-in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -100,6 +96,7 @@ in
         });
 
         xorg = pkgs.xorg // {
+        # patch evdev for space as control hack
         xf86inputevdev = pkgs.xorg.xf86inputevdev.overrideAttrs (attrs: attrs // {
                             patches = [ ./pkgs/evdev-ahm.patch ];
         });
