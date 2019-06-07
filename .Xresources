@@ -1,7 +1,7 @@
 
 
 Xcursor.theme: Vanilla-DMZ-AA
-Xcursor.size: 48
+Xcursor.size: 96
 ! Emacs.font: Inconsolata-8.5
 Emacs.fontBackend: xft
 Emacs.menuBar: off
