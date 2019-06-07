@@ -12,6 +12,7 @@ apps = [
     ('m', 'Cantata', 'cantata'),
     ('n', 'Nautilus', 'nautilus'),
     ('s', 'Spotify', 'spotify --force-device-scale-factor=2'),
+    ('t', 'kteatime', 'kteatime'),
     ('z', 'Zotero', 'zotero')
 ]
 
