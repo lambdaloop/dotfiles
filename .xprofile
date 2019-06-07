@@ -37,7 +37,7 @@ xset r rate 200 15 # set keyboard repeat and delay
 
 ## 37.8717° N, 122.2728° W for Berkeley
 ## 41.73, -71.30 for Barrington
-redshift-gtk -l 37.8717:-122.2728  -t 6500:3100 -m vidmode & #color adjustion
+# redshift-gtk -l 37.8717:-122.2728  -t 6500:3100 -m vidmode & #color adjustion
 
 nm-applet &
 kteatime &
