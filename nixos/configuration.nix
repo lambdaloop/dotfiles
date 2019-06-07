@@ -1,3 +1,4 @@
+# coding: utf-8
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -35,72 +36,97 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     dmenu
-     emacs
-     firefox
-     gitAndTools.gitFull
-     glxinfo
-     gparted
-     killall
-     mg
-     mpv
-     python3Full
-     python3Packages.pip
-     rofi
-     stow
-     trayer
-     wget
-     (xmonad-with-packages.override { packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; })
-     xmobar
-     xorg.xmodmap
-     xkbset
-     zotero
-     zsh
-     konsole
-     inkscape
-     networkmanagerapplet
-     imlib2
-     openssl
 
-     numix-gtk-theme
-     numix-icon-theme
-     numix-icon-theme-square
-     numix-cursor-theme
-   ];
+    # command line tools
+    bash
+    file
+    gitAndTools.gitFull
+    htop
+    killall
+    mg
+    stow
+    wget
+    zip unzip
+    zsh
+
+    # core GUIs
+    emacs
+    evince
+    firefox
+    gparted
+    inkscape
+    konsole
+    mpv
+    zotero
+
+    # programming
+    python3Full
+    python3Packages.pip
+
+    # ui
+    dmenu
+    networkmanagerapplet
+    rofi
+    trayer
+
+    # dictionaries
+    aspell
+    aspellDicts.en aspellDicts.fr
+
+    # X utilities
+    xkbset
+    xmobar
+    xorg.xmodmap
+    (xmonad-with-packages.override { packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; })
+
+    # other utilities
+    pavucontrol
+    ntfs3g
+    openssl
+    imagemagick
+    pandoc
+
+    # style
+    numix-cursor-theme
+    numix-gtk-theme
+    numix-icon-theme
+    numix-icon-theme-square
+    hicolor-icon-theme
+  ];
 
 
   nixpkgs.config = {
     allowUnfree = true;
     firefox = {
       enableGoogleTalkPlugin = true;
-      enableAdobeFlash = true;
+      enableAdobeFlash = false;
     };
 
-    pidgin = {
-      openssl = true;
-      gnutls = true;
-    };
+    # pidgin = {
+    #   openssl = true;
+    #   gnutls = true;
+    # };
 
     packageOverrides = pkgs: {
-        # Define my own Emacs
-        emacs = pkgs.lib.overrideDerivation (pkgs.emacs.override {
-            # Make sure imagemgick is a dependency because I regularly
-            # look at pictures from Emasc
-            imagemagick = pkgs.imagemagickBig;
-          }) (attrs: {
-            # I don't want emacs.desktop file because I only use
-            # emacsclient.
-            postInstall = attrs.postInstall + ''
-              rm $out/share/applications/emacs.desktop
-            '';
-        });
+      # Define my own Emacs
+      emacs = pkgs.lib.overrideDerivation (pkgs.emacs.override {
+                                             # Make sure imagemgick is a dependency because I regularly
+                                             # look at pictures from Emasc
+                                             imagemagick = pkgs.imagemagickBig;
+                                           }) (attrs: {
+                                                 # I don't want emacs.desktop file because I only use
+                                                 # emacsclient.
+                                                 postInstall = attrs.postInstall + ''
+                                                 rm $out/share/applications/emacs.desktop
+                                                 '';
+                                               });
 
-        xorg = pkgs.xorg // {
+      xorg = pkgs.xorg // {
         # patch evdev for space as control hack
         xf86inputevdev = pkgs.xorg.xf86inputevdev.overrideAttrs (attrs: attrs // {
-                            patches = [ ./pkgs/evdev-ahm.patch ];
-        });
-        };
+                                                                   patches = [ ./pkgs/evdev-ahm.patch ];
+                                                                 });
+      };
 
     };
 
@@ -108,6 +134,7 @@
 
   # Add fonts
   fonts = {
+    enableCoreFonts = true;
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
@@ -115,13 +142,13 @@
       inconsolata # monospaced
       ubuntu_font_family
       dejavu_fonts
-     google-fonts
-     noto-fonts
-     noto-fonts-cjk
-     noto-fonts-emoji
-     noto-fonts-extra
-     font-awesome-ttf
-     roboto
+      google-fonts
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      noto-fonts-extra
+      font-awesome-ttf
+      roboto
     ];
   };
 
@@ -129,6 +156,7 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; };
+  programs.bash.enableCompletion = true;
 
   # List services that you want to enable:
 
@@ -142,7 +170,14 @@
   # networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    webInterface = true;
+    drivers = with pkgs; [ gutenprint ];
+  };
+
+  # Automatic device mounting daemon
+  services.devmon.enable = true;
 
   # Enable sound.
   sound.enable = true;
@@ -155,7 +190,7 @@
   # services.xserver.xkbOptions = "eurosign:e";
 
   # Enable touchpad support.
-  services.xserver.libinput.enable = false;
+  services.xserver.libinput.enable = true;
   services.xserver.libinput.tapping = false;
 
   # Enable the KDE Desktop Environment.
@@ -165,13 +200,68 @@
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.xmonad.enableContribAndExtras = true;
 
+  services.xserver.config =
+    ''
+  Section "InputClass"
+  Identifier "Keyboard" # You can name this arbitrarily
+  Driver "evdev"
+  # Option "XKBOptions" "terminate:ctrl_alt_bksp" # and so on
+
+  # If you save this file under xorg.conf.d/ :
+  Option "AutoServerLayout" "on"
+
+  MatchIsKeyboard "on"
+  # If you have multiple keyboards, you want something like one of them:
+  #  MatchProduct "AT Translated Set 2 keyboard"
+  #  MatchUSBID "0566:3029"
+  # Name is found in Xorg log, following the message "Adding input device"
+  # or by
+  # $ cat /proc/bus/input/devices
+
+  ### at-home-modifier options begin here.
+  # The basic option.
+  Option "TransMod" "65:37" # Defines key/modifier pairs.
+
+  ## Fine tuning options. Explained in a later section.
+  # For the first time, omit them.
+
+  Option "AhmTimeout" "400" # In millisecond.
+  # Option "AhmDelay" "65" # Delayed keys. Seperate by spaces.
+  # Option "AhmFreezeTT" "true"
+  # Option "AhmResetTime" "10" # In sec.
+  # Option "AhmPaddingInterval" "10" # In millisecond.
+  EndSection
+  '';
+
+
+  services.redshift = {
+    enable = true;
+
+    # Seattle
+    latitude = "47.6705";
+    longitude = "-122.314";
+
+    temperature = {
+      day = 6500;
+      night = 3100;
+    };
+
+    extraOptions = ["-m vidmode"];
+  };
+
+  services.mpd = {
+    enable = true;
+    musicDirectory= /home/pierre/Music;
+    group = "music";
+  };
+
   services.gnome3.gnome-keyring.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pierre = {
-     isNormalUser = true;
-     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
-   };
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+  };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
@@ -181,22 +271,22 @@
 
 
   fileSystems."/jellyfish" =
-  { device = "/dev/disk/by-label/jellyfish";
-    fsType = "ext2";
-  };
+    { device = "/dev/disk/by-label/jellyfish";
+      fsType = "ext2";
+    };
 
-#  services.emacs.enable = true;
+  #  services.emacs.enable = true;
 
   hardware.facetimehd.enable = true;
 
   # Enable UPower, which is used by taffybar.
-  # services.upower.enable = true;
-  # systemd.services.upower.enable = true;
+  services.upower.enable = true;
+  systemd.services.upower.enable = true;
 
   fileSystems."/boot" =
-   { device = "/dev/sda1";
-     fsType = "vfat";
-     #    options = [ "rw" "data=ordered" "relatime" ];
-   };
+    { device = "/dev/sda1";
+      fsType = "vfat";
+      #    options = [ "rw" "data=ordered" "relatime" ];
+    };
 
 }
