@@ -1,12 +1,12 @@
 
 Config {
-    font = "xft:DejaVu Sans:size=9:antialias=true"
-  , additionalFonts = ["xft:FontAwesome-8", "xft:Noto Sans:size=9.5:antialias=true:style=bold", "xft:Noto Sans CJK KR:size=9.5:antialias=true"]
+    font = "xft:DejaVu Sans:size=9.5:antialias=true"
+  , additionalFonts = ["xft:FontAwesome-9", "xft:Noto Sans:size=9.5:antialias=true:style=bold", "xft:Noto Sans CJK KR:size=9.5:antialias=true"]
   , borderColor = "#2d2d2d"
   , border = NoBorder
   , bgColor =  "#102235" -- "#2D3743" -- "#26292C"
   , fgColor = "#ddccaa" -- "#e1e1e0"
-  , textOffset = 28
+  , textOffset = 38
   , iconOffset = 17
   , position = TopSize L 92 60
   , lowerOnStart = False
