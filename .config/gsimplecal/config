@@ -1,0 +1,2 @@
+mainwindow_position = center
+external_viewer = firefox "https://calendar.google.com/calendar/r/week/%Y/%m/%d"
