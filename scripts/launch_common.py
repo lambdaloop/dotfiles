@@ -9,6 +9,7 @@ r = Rofi(rofi_args=['-font', 'Noto Sans 20', '-i'], lines=1)
 apps = [
     ('f', 'Firefox', 'firefox'),
     ('r', 'Anki', 'anki'),
+    ('g', 'gsimplecal', 'gsimplecal'),
     ('m', 'Cantata', 'cantata'),
     ('n', 'Nautilus', 'nautilus'),
     ('s', 'Spotify', 'spotify --force-device-scale-factor=2'),
