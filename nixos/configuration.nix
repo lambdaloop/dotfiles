@@ -5,6 +5,9 @@
 
 { config, pkgs, ... }:
 
+let chili-sddm-theme = pkgs.libsForQt5.callPackage ./pkgs/sddm_chili.nix {};
+
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -15,10 +18,16 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernelPackages = pkgs.linuxPackages_5_1;
+  # boot.kernelParams = ["acpi_osi=" "acpi_backlight=vendor"];
+  # boot.kernelParams = ["video.use_native_backlight=1"];
+
   networking.hostName = "europa"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;
 
+  boot.kernelModules = [ "fuse" "coretemp"];
+  
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -58,7 +67,7 @@
     konsole
     mpv
     zotero
-
+    
     # programming
     python3Full
     python3Packages.pip
@@ -68,32 +77,52 @@
     networkmanagerapplet
     rofi
     trayer
+    maim
 
     # dictionaries
     aspell
     aspellDicts.en aspellDicts.fr
+    manpages
 
     # X utilities
     xkbset
     xmobar
     xorg.xmodmap
-    (xmonad-with-packages.override { packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; })
-
-    # other utilities
-    pavucontrol
+    (xmonad-with-packages.override {
+          packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; })
+    
+    # other programs
+    cantata
+    gsimplecal
+    htop
+    imagemagick
+    mpc_cli
+    gnome3.nautilus
+    nox
     ntfs3g
     openssl
-    imagemagick
     pandoc
+    pass
+    pavucontrol
+    playerctl
+    spotify
 
     # style
+    lxappearance
     numix-cursor-theme
     numix-gtk-theme
     numix-icon-theme
     numix-icon-theme-square
     hicolor-icon-theme
+    xfce4-13.xfce4-icon-theme
+    vanilla-dmz
+  ] ++
+  [
+   chili-sddm-theme
   ];
 
+
+  documentation.dev.enable = true;
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -109,23 +138,25 @@
 
     packageOverrides = pkgs: {
       # Define my own Emacs
-      emacs = pkgs.lib.overrideDerivation (pkgs.emacs.override {
-                                             # Make sure imagemgick is a dependency because I regularly
-                                             # look at pictures from Emasc
-                                             imagemagick = pkgs.imagemagickBig;
-                                           }) (attrs: {
-                                                 # I don't want emacs.desktop file because I only use
-                                                 # emacsclient.
-                                                 postInstall = attrs.postInstall + ''
-                                                 rm $out/share/applications/emacs.desktop
-                                                 '';
-                                               });
+      emacs = pkgs.lib.overrideDerivation (
+      pkgs.emacs.override {
+            # Make sure imagemgick is a dependency because I regularly
+            # look at pictures from Emacs
+            imagemagick = pkgs.imagemagickBig;
+            }) (attrs: {
+            # I don't want emacs.desktop file because I only use
+            # emacsclient.
+            postInstall = attrs.postInstall + ''
+            rm $out/share/applications/emacs.desktop
+            '';
+       });
 
       xorg = pkgs.xorg // {
         # patch evdev for space as control hack
-        xf86inputevdev = pkgs.xorg.xf86inputevdev.overrideAttrs (attrs: attrs // {
-                                                                   patches = [ ./pkgs/evdev-ahm.patch ];
-                                                                 });
+        xf86inputevdev = pkgs.xorg.xf86inputevdev.overrideAttrs
+              (attrs: attrs // {
+                   patches = [ ./pkgs/evdev-ahm.patch ];
+               });
       };
 
     };
@@ -195,6 +226,8 @@
 
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.sddm.theme = "chili";
+
   # services.xserver.desktopManager.plasma5.enable = true;
 
   services.xserver.windowManager.xmonad.enable = true;
@@ -245,23 +278,36 @@
       day = 6500;
       night = 3100;
     };
-
     extraOptions = ["-m vidmode"];
   };
 
   services.mpd = {
     enable = true;
     musicDirectory= /home/pierre/Music;
-    group = "music";
   };
 
   services.gnome3.gnome-keyring.enable = true;
 
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+          "*/10 * * * *      pierre    . /etc/profile; ${pkgs.bash} /home/pierre/scripts/screens.sh"
+    ];
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pierre = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "power" ]; # Enable ‘sudo’ for the user.
   };
+
+
+  security.sudo.extraConfig = ''
+  %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/poweroff
+  %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/reboot
+  %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/systemctl suspendg
+  %power      ALL=(ALL:ALL) NOPASSWD: /home/pierre/scripts/fix_brightness_permissions.sh
+'';
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
@@ -282,6 +328,8 @@
   # Enable UPower, which is used by taffybar.
   services.upower.enable = true;
   systemd.services.upower.enable = true;
+
+  
 
   fileSystems."/boot" =
     { device = "/dev/sda1";
