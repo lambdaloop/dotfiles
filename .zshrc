@@ -155,6 +155,7 @@ alias pbpaste='xclip -selection clipboard -o'
 alias ls='ls --color=tty -v'
 alias l='ls --color=tty -v'
 alias rs='rsync -ah --info=progress2'
+alias rsog='rsync -ah --info=progress2 --no-perms --no-owner --no-group --no-times'
 alias doc2pdf="loffice --headless --convert-to pdf:writer_pdf_Export"
 # alias kobo="k2pdfopt -ui- -h 1827 -w 1404 -dpi 300 -fc-"
 alias kobo="k2pdfopt -ui- -h 1727 -w 1304 -dpi 300 -fc- -x" # use smaller width for margin

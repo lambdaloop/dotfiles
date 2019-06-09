@@ -6,9 +6,9 @@ Config {
   , border = NoBorder
   , bgColor =  "#102235" -- "#2D3743" -- "#26292C"
   , fgColor = "#ddccaa" -- "#e1e1e0"
-  , textOffset = 38
+  , textOffset = 33
   , iconOffset = 17
-  , position = TopSize L 92 60
+  , position = TopSize L 92 50
   , lowerOnStart = False
   , commands = [ Run Date "<fn=1></fn> %A %B %d      <fn=1></fn> %H:%M" "date" 50
                , Run BatteryP ["BAT0"] ["-t", "<left> (<timeleft>)", "-S", "True"
