@@ -140,10 +140,13 @@ myKeysP conf =
   , ("<F10>", spawn "amixer -c 1 set Master 1%-; bash ~/scripts/vol_xmobar.sh")
   , ("<F12>", spawn "pactl set-sink-mute 1 toggle || amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
 
-  , ("<XF86MonBrightnessDown>", spawn "xbacklight -inc -2")
-  , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc +2")
-  , ("M-<XF86MonBrightnessDown>", spawn "xbacklight -inc -0.1")
-  , ("M-<XF86MonBrightnessUp>", spawn "xbacklight -inc +0.1")
+  -- , ("<XF86MonBrightnessDown>", spawn "xbacklight -inc -2")
+  -- , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc +2")
+  -- , ("M-<XF86MonBrightnessDown>", spawn "xbacklight -inc -0.1")
+  -- , ("M-<XF86MonBrightnessUp>", spawn "xbacklight -inc +0.1")
+  , ("<XF86MonBrightnessDown>", spawn "python ~/scripts/set_brightness.py dec")
+  , ("<XF86MonBrightnessUp>", spawn "python ~/scripts/set_brightness.py inc")
+
 
   , ("<XF86AudioPrev>", spawn "python ~/scripts/media.py prev")
   , ("<XF86AudioNext>", spawn "python ~/scripts/media.py next")
