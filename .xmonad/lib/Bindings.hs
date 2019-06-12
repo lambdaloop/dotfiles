@@ -33,8 +33,6 @@ myWindowBringerConfig = def
   , windowTitler = myWindowTitler
   }
 
-python_path = "/home/pierre/scripts/script-env/bin/python"
-
 myKeysP conf =
 
   {- WINDOW MANAGEMENT -}
@@ -75,7 +73,7 @@ myKeysP conf =
   , ("M-e", spawn editor)
   , ("M-C-e", spawn "notify-send 'starting conda emacs'; bash ~/scripts/conda_emacs.sh")
   , ("M-S-e", spawn "killall emacs; emacs --daemon; emacsclient -c")
-  , ("M-u", spawn $ python_path ++ " ~/scripts/launch_common.py")
+  , ("M-u", spawn $ "python ~/scripts/launch_common.py")
   , ("M-l", spawn "cantata")
   , ("M-C-p", spawn "mpv $(xclip -o)")
   --, forEmacs ("M-b", spawn "emacsclient -c -e '(beeminder-list-goals)'")

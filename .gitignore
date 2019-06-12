@@ -3,3 +3,4 @@
 *.hi
 *.o
 result
+script-env

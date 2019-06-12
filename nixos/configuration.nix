@@ -21,6 +21,9 @@ in
   boot.kernelPackages = pkgs.linuxPackages_5_1;
   # boot.kernelParams = ["acpi_osi=" "acpi_backlight=vendor"];
   # boot.kernelParams = ["video.use_native_backlight=1"];
+  boot.kernel.sysctl = {
+    "vm.swappiness" = pkgs.lib.mkDefault 1;
+  };
 
   networking.hostName = "europa"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -198,6 +201,10 @@ in
       noto-fonts-extra
       font-awesome-ttf
       roboto
+      paratype-pt-serif
+      source-code-pro
+      source-sans-pro
+      source-serif-pro
     ];
   };
 

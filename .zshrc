@@ -54,7 +54,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man-pages z pass)
+plugins=(git colored-man-pages z pass nix-shell)
 # if [ -z "$INSIDE_EMACS" ]; then
 plugins+=zsh-autosuggestions
 # fi
@@ -70,6 +70,8 @@ export PATH=/home/pierre/.local/bin:$PATH
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export TERM=xterm-256color
+
+export SHELL=$(which zsh)
 
 if [ -n "$INSIDE_EMACS" ]; then
     ## this setups the path properly
@@ -162,6 +164,8 @@ alias kobo="k2pdfopt -ui- -h 1727 -w 1304 -dpi 300 -fc- -x" # use smaller width 
 alias open="xdg-open"
 alias ot="xdg-open . &"
 
+alias sa="source activate"
+
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  
 
 
@@ -173,11 +177,16 @@ function greet() {
            "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
 }
 
+
+function conda-shell {
+    command nix-shell ~/dotfiles/nixos/conda-shell.nix
+}
+
 # function greet() {
 #     printf "Welcome to $fg_bold[blue]zsh$reset_color.\n"
 # }
 
-if [[ $SHLVL -eq 4 ]] ; then
+if [[ $SHLVL -eq 3 ]] ; then
     echo
     # printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s\n" \
         #        "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
