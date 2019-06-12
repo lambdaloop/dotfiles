@@ -18,7 +18,7 @@ function two-screens
 }
 
 
-two-screens '' 'xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP-1 --off'
+two-screens '' 'xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP1 --off'
 
 #manage backgrounds and trayer
 bash ~/scripts/twoScreenStuff.sh
@@ -45,4 +45,7 @@ kteatime &
 emacs --daemon &
 
 # setup permissions for brightness
-sudo /home/pierre/scripts/fix_brightness_permissions.sh
+sudo /home/pierre/scripts/fix_brightness_permissions.sh &
+
+bash ~/scripts/changeBackground.sh &
+

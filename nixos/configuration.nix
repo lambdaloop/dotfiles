@@ -27,7 +27,7 @@ in
   networking.networkmanager.enable = true;
 
   boot.kernelModules = [ "fuse" "coretemp"];
-  
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -66,8 +66,9 @@ in
     inkscape
     konsole
     mpv
+    viewnior
     zotero
-    
+
     # programming
     python3Full
     python3Packages.pip
@@ -88,9 +89,8 @@ in
     xkbset
     xmobar
     xorg.xmodmap
-    (xmonad-with-packages.override {
-          packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; })
-    
+    xmonad-with-packages
+
     # other programs
     cantata
     gsimplecal
@@ -106,6 +106,14 @@ in
     pavucontrol
     playerctl
     spotify
+
+    # graphics
+    intel-ocl
+    libva-full
+    libvdpau-va-gl
+    vaapiIntel
+    vaapiVdpau
+    xorg.xf86videointel
 
     # style
     lxappearance
@@ -158,6 +166,16 @@ in
                    patches = [ ./pkgs/evdev-ahm.patch ];
                });
       };
+
+      mpv = pkgs.mpv.override {
+         x11Support = true;
+         vaapiSupport = true;
+         vdpauSupport = true;
+         pulseSupport = true;
+      };
+
+      xmonad-with-packages = pkgs.xmonad-with-packages.override {
+          packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; };
 
     };
 
@@ -215,10 +233,23 @@ in
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.systemWide = false;
 
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      intel-ocl
+    ];
+    driSupport32Bit = true;
+  };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "dvorak";
   # services.xserver.xkbOptions = "eurosign:e";
+
+  services.xserver.videoDrivers = [ "intel" ];
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
@@ -329,7 +360,7 @@ in
   services.upower.enable = true;
   systemd.services.upower.enable = true;
 
-  
+
 
   fileSystems."/boot" =
     { device = "/dev/sda1";
