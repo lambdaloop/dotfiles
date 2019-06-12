@@ -33,6 +33,8 @@ myWindowBringerConfig = def
   , windowTitler = myWindowTitler
   }
 
+python_path = "/home/pierre/scripts/script-env/bin/python"
+
 myKeysP conf =
 
   {- WINDOW MANAGEMENT -}
@@ -71,9 +73,9 @@ myKeysP conf =
   , ("M-s", raiseMaybe (spawn "spotify --force-device-scale-factor=2") (className =? "Spotify"))
   , ("M-S-i", spawn "conkeror")
   , ("M-e", spawn editor)
-  , ("M-C-e", spawn "emacs")
+  , ("M-C-e", spawn "notify-send 'starting conda emacs'; bash ~/scripts/conda_emacs.sh")
   , ("M-S-e", spawn "killall emacs; emacs --daemon; emacsclient -c")
-  , ("M-u", spawn "python3 ~/scripts/launch_common.py")
+  , ("M-u", spawn $ python_path ++ " ~/scripts/launch_common.py")
   , ("M-l", spawn "cantata")
   , ("M-C-p", spawn "mpv $(xclip -o)")
   --, forEmacs ("M-b", spawn "emacsclient -c -e '(beeminder-list-goals)'")
@@ -110,23 +112,23 @@ myKeysP conf =
   {- SCREEN MANAGEMENT -}
 
     -- left
-  , ("M-/", spawn "xrandr --output DP-1 --off --auto --output eDP-1 --primary --auto --panning 2560x1600; killall trayer; xmonad --restart; bash ~/scripts/twoScreenStuff.sh;")
+  , ("M-/", spawn "xrandr --output DP1 --off --auto --output eDP1 --primary --auto --panning 2560x1600; killall trayer; xmonad --restart; bash ~/scripts/twoScreenStuff.sh;")
 
 
     -- 2 screens
-  , ("M-=", spawn "xrandr --output DP-1 --primary --auto --right-of eDP-1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.4 0 0 0 0.625 0 0 0 1; bash ~/scripts/twoScreenStuff.sh;")
-  , ("M-S-=", spawn "xrandr --output DP-1 --primary --auto --right-of eDP-1 --scale 1x1 --panning 1920x1080+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.42857 0 0.5714 0 0.675 0 0 0 1; bash ~/scripts/twoScreenStuff.sh;")
+  , ("M-=", spawn "xrandr --output DP1 --primary --auto --right-of eDP1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.4 0 0 0 0.625 0 0 0 1; bash ~/scripts/twoScreenStuff.sh;")
+  , ("M-S-=", spawn "xrandr --output DP1 --primary --auto --right-of eDP1 --scale 1x1 --panning 1920x1080+2560+0 --auto; xmonad --restart; xinput set-prop \"UC-LOGIC TWA60 Pen\" --type=float \"Coordinate Transformation Matrix\" 0.42857 0 0.5714 0 0.675 0 0 0 1; bash ~/scripts/twoScreenStuff.sh;")
 
-  , ("M-C-=", spawn "xrandr --output HDMI-2 --auto --right-of eDP-1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; bash ~/scripts/twoScreenStuff.sh")
-  , ("M-C-/", spawn "xrandr --output HDMI-2 --off --auto --output eDP-1 --primary --auto; killall trayer; xmonad --restart; bash ~/scripts/twoScreenStuff.sh;")
+  , ("M-C-=", spawn "xrandr --output HDMI2 --auto --right-of eDP1 --scale 2x2 --panning 3840x2160+2560+0 --auto; xmonad --restart; bash ~/scripts/twoScreenStuff.sh")
+  , ("M-C-/", spawn "xrandr --output HDMI2 --off --auto --output eDP1 --primary --auto; killall trayer; xmonad --restart; bash ~/scripts/twoScreenStuff.sh;")
 
     -- right only
-  , ("M-\\", spawn "xrandr --output DP-1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP-1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
-  -- , ("M-S-\\", spawn "xrandr --output HDMI-2 --scale 2x2 --panning 5120x2160+0+0 --primary --auto --output eDP-1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
-  , ("M-S-\\", spawn "xrandr --output HDMI-2 --scale 2x2  --primary --auto --panning 3200x1800+0+0 --output eDP-1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
-  , ("M-C-\\", spawn "xrandr --output HDMI-2 --scale 2x2 --panning 3840x2160+0+0 --primary --auto --output eDP-1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
-  -- , ("M-S-C-\\", spawn "xrandr --output HDMI-2 --scale 2x2 --panning 5120x2160+0+0 --primary --auto --output eDP-1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
-  , ("M-S-C-\\", spawn "xrandr --output HDMI-2 --scale 2x2 --panning 5120x2880+0+0 --primary --auto --output eDP-1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
+  , ("M-\\", spawn "xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
+  -- , ("M-S-\\", spawn "xrandr --output HDMI2 --scale 2x2 --panning 5120x2160+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
+  , ("M-S-\\", spawn "xrandr --output HDMI2 --scale 2x2  --primary --auto --panning 3200x1800+0+0 --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
+  , ("M-C-\\", spawn "xrandr --output HDMI2 --scale 2x2 --panning 3840x2160+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
+  -- , ("M-S-C-\\", spawn "xrandr --output HDMI2 --scale 2x2 --panning 5120x2160+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
+  , ("M-S-C-\\", spawn "xrandr --output HDMI2 --scale 2x2 --panning 5120x2880+0+0 --primary --auto --output eDP1 --off; bash ~/scripts/twoScreenStuff.sh; xmonad --restart")
 
 
   {- AUDIO MANAGEMENT -}
