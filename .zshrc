@@ -181,7 +181,7 @@ function greet() {
 
 
 function conda-shell {
-    command nix-shell ~/dotfiles/nixos/conda-shell.nix
+    command nix-shell ~/dotfiles/nixos/shells/conda-shell.nix
 }
 
 # function greet() {

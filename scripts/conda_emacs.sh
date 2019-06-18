@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo 'source activate dlc; emacs' | nix-shell ~/dotfiles/nixos/conda-shell.nix
+echo 'source activate dlc; emacs' | nix-shell ~/dotfiles/nixos/shells/conda-shell.nix
