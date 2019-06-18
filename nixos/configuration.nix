@@ -114,7 +114,7 @@ in
     pavucontrol
     playerctl
     spotify
-    
+
     # graphics
     intel-ocl
     libva-full
@@ -357,7 +357,6 @@ in
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/reboot
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/systemctl suspendg
   %power      ALL=(ALL:ALL) NOPASSWD: /home/pierre/scripts/fix_brightness_permissions.sh
-  %networkmanager      ALL=(ALL:ALL) NOPASSWD: ${mullvad}/bin/mullvad-daemon
 '';
 
   # This value determines the NixOS release with which your system is to be
@@ -380,7 +379,25 @@ in
   services.upower.enable = true;
   systemd.services.upower.enable = true;
 
+  systemd.services.mullvad = {
+    description = "Mullvad VPN daemon";
+    after = [ "network.target" "network-online.target" "NetworkManager.service" "systemd-resolved.service"];
+    path = with pkgs; [ iproute utillinux coreutils ];
 
+    unitConfig = {
+       StartLimitBurst = 5;
+       StartLimitIntervalSec = 20;
+    };
+
+    serviceConfig = {
+       Restart = "always";
+       RestartSec = 1;
+       ExecStart = "${mullvad}/bin/mullvad-daemon -v --disable-stdout-timestamps";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  systemd.services.mullvad.enable = true;
 
   fileSystems."/boot" =
     { device = "/dev/sda1";

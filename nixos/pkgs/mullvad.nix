@@ -52,27 +52,27 @@ in
 
 stdenv.mkDerivation rec {
   name = "mullvad-${version}";
-  version = "2019.4";
+  version = "2019.5";
 
   src = fetchurl {
     url = "https://www.mullvad.net/media/app/MullvadVPN-${version}_amd64.deb";
-    sha256 = "5b568cc40322aee871f3919ab62222f2a3e15f52223dacd18cd29a9835d1b495";
+    sha256 = "542a93521906cd5e97075c9f3e9088c19562b127556a3de151e25bc66b11fe0b";
   };
 
-  nativeBuildInputs = [ 
+  nativeBuildInputs = [
     autoPatchelfHook
     dpkg
     makeWrapper
-    gobject-introspection 
+    gobject-introspection
   ];
-  
+
   buildInputs = deps;
 
   dontBuild = true;
   dontConfigure = true;
   dontPatchELF = true;
   dontStrip = true;
-  
+
   unpackPhase = "dpkg-deb -x $src pkg";
 
   installPhase = ''
@@ -105,8 +105,6 @@ stdenv.mkDerivation rec {
 
     ln -s $out/share/mullvad/mullvad-vpn $out/bin/mullvad-vpn
     ln -s $out/share/mullvad/resources/mullvad-daemon $out/bin/mullvad-daemon
-    
-    install -D -m644 $out/share/mullvad/resources/mullvad-daemon.service $out/lib/systemd/system/mullvad.service
 
     runHook postInstall
   '';
@@ -119,4 +117,3 @@ stdenv.mkDerivation rec {
   };
 
 }
-
