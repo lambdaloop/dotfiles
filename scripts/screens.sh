@@ -7,7 +7,7 @@ MAX_WAIT=600 #seconds
 # random number between 0 and MAX_WAIT (inclusive)
 RAND=$(echo `cat /dev/urandom | od -N2 -An -i` % $MAX_WAIT | bc)
 
-# sleep $RAND
+sleep $RAND
 # x=`env DISPLAY=:0 xscreensaver-command -time 2>&1 | grep -P 'non-blanked|no saver status on root window|no screensaver is running'`
 x=`ps -A | grep slimlock`
 
