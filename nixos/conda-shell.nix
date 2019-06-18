@@ -79,7 +79,6 @@ in
         gtk3
         pkgconfig
         
-        
 
         # Just in case one installs a package with pip instead of conda and pip
         # needs to compile some C sources

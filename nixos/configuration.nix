@@ -5,7 +5,9 @@
 
 { config, pkgs, ... }:
 
-let chili-sddm-theme = pkgs.libsForQt5.callPackage ./pkgs/sddm_chili.nix {};
+let
+ chili-sddm-theme = pkgs.libsForQt5.callPackage ./pkgs/sddm_chili.nix {};
+ mullvad = pkgs.callPackage ./pkgs/mullvad.nix {};
 
 in
 {
@@ -56,6 +58,7 @@ in
     htop
     killall
     mg
+    scrot
     stow
     wget
     zip unzip
@@ -92,6 +95,8 @@ in
     xkbset
     xmobar
     xorg.xmodmap
+    xorg.xbacklight
+    xcompmgr
     xmonad-with-packages
 
     # other programs
@@ -109,7 +114,7 @@ in
     pavucontrol
     playerctl
     spotify
-
+    
     # graphics
     intel-ocl
     libva-full
@@ -124,12 +129,19 @@ in
     numix-gtk-theme
     numix-icon-theme
     numix-icon-theme-square
+    arc-icon-theme
+    pantheon.elementary-gtk-theme
+    pantheon.elementary-icon-theme
     hicolor-icon-theme
     xfce4-13.xfce4-icon-theme
     vanilla-dmz
+
+    gdk_pixbuf
+    gnome3.librsvg
   ] ++
   [
    chili-sddm-theme
+   mullvad
   ];
 
 
@@ -329,7 +341,7 @@ in
   services.cron = {
     enable = true;
     systemCronJobs = [
-          "*/10 * * * *      pierre    . /etc/profile; ${pkgs.bash} /home/pierre/scripts/screens.sh"
+          "*/10 * * * *      pierre    . /etc/profile; ${pkgs.bash}/bin/bash /home/pierre/scripts/screens.sh"
     ];
   };
 
@@ -345,6 +357,7 @@ in
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/reboot
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/systemctl suspendg
   %power      ALL=(ALL:ALL) NOPASSWD: /home/pierre/scripts/fix_brightness_permissions.sh
+  %networkmanager      ALL=(ALL:ALL) NOPASSWD: ${mullvad}/bin/mullvad-daemon
 '';
 
   # This value determines the NixOS release with which your system is to be
