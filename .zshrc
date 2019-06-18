@@ -125,6 +125,8 @@ alias cabalupgrades="cabal list --installed  | egrep -iv '(synopsis|homepage|lic
 
 setopt COMPLETE_ALIASES
 
+export DISABLE_AUTO_UPDATE="true"
+
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment

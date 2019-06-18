@@ -47,5 +47,8 @@ emacs --daemon &
 # setup permissions for brightness
 sudo /home/pierre/scripts/fix_brightness_permissions.sh &
 
+# setup mullvad daemon
+sudo mullvad-daemon &
+
 bash ~/scripts/changeBackground.sh &
 
