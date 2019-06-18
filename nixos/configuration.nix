@@ -14,6 +14,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./mullvad.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -379,25 +380,25 @@ in
   services.upower.enable = true;
   systemd.services.upower.enable = true;
 
-  systemd.services.mullvad = {
-    description = "Mullvad VPN daemon";
-    after = [ "network.target" "network-online.target" "NetworkManager.service" "systemd-resolved.service"];
-    path = with pkgs; [ iproute utillinux coreutils ];
+  # systemd.services.mullvad = {
+  #   description = "Mullvad VPN daemon";
+  #   after = [ "network.target" "network-online.target" "NetworkManager.service" "systemd-resolved.service"];
+  #   path = with pkgs; [ iproute utillinux coreutils ];
 
-    unitConfig = {
-       StartLimitBurst = 5;
-       StartLimitIntervalSec = 20;
-    };
+  #   unitConfig = {
+  #      StartLimitBurst = 5;
+  #      StartLimitIntervalSec = 20;
+  #   };
 
-    serviceConfig = {
-       Restart = "always";
-       RestartSec = 1;
-       ExecStart = "${mullvad}/bin/mullvad-daemon -v --disable-stdout-timestamps";
-    };
-    wantedBy = [ "multi-user.target" ];
-  };
+  #   serviceConfig = {
+  #      Restart = "always";
+  #      RestartSec = 1;
+  #      ExecStart = "${mullvad}/bin/mullvad-daemon -v --disable-stdout-timestamps";
+  #   };
+  #   wantedBy = [ "multi-user.target" ];
+  # };
 
-  systemd.services.mullvad.enable = true;
+  services.mullvad.enable = true;
 
   fileSystems."/boot" =
     { device = "/dev/sda1";
