@@ -2,16 +2,12 @@
 
 { stdenv, makeWrapper, fetchurl, dpkg
 , alsaLib, atk, cairo, cups, dbus, expat, fontconfig, freetype
-, gdk_pixbuf, glib, gnome2, nspr, nss, gtk3, gtk2, at-spi2-atk
-, gsettings-desktop-schemas, gobject-introspection, wrapGAppsHook
-, xorg, nghttp2
-, libudev0-shim, glibc, curl, openssl, autoPatchelfHook
-, udev, pulseaudio, libpulseaudio, systemd, libnotify
+, gdk_pixbuf, glib, gnome2, pango, nspr, nss, gtk3
+, xorg, autoPatchelfHook, systemd, libnotify
 }:
 
 let deps = [
     alsaLib
-    at-spi2-atk
     atk
     cairo
     cups
@@ -22,12 +18,8 @@ let deps = [
     gdk_pixbuf
     glib
     gnome2.GConf
-    gnome2.pango
-    gtk2
+    pango
     gtk3
-    gsettings-desktop-schemas
-    pulseaudio
-    libpulseaudio
     libnotify
     xorg.libX11
     xorg.libXScrnSaver
@@ -43,15 +35,13 @@ let deps = [
     xorg.libxcb
     nspr
     nss
-    udev
-    stdenv.cc.cc
     systemd
   ];
 
 in
 
 stdenv.mkDerivation rec {
-  name = "mullvad-${version}";
+  pname = "mullvad-vpn";
   version = "2019.5";
 
   src = fetchurl {
@@ -62,42 +52,25 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     autoPatchelfHook
     dpkg
-    makeWrapper
-    gobject-introspection
   ];
 
   buildInputs = deps;
 
   dontBuild = true;
   dontConfigure = true;
-  dontPatchELF = true;
-  dontStrip = true;
 
-  unpackPhase = "dpkg-deb -x $src pkg";
+  unpackPhase = "dpkg-deb -x $src .";
+
+  runtimeDependencies = [systemd.lib libnotify];
 
   installPhase = ''
     runHook preInstall
 
-    libdir=$out/lib/mullvad
     mkdir -p $out/share/mullvad $out/lib $out/bin
-    mkdir -p $libdir
 
-    mv ./pkg/usr/share/* $out/share
-    mv ./pkg/usr/bin/* $out/bin
-    mv pkg/opt/Mullvad\ VPN/* $out/share/mullvad
-    cp $out/share/mullvad/*.so $libdir
-
-    rpath="$out/share/mullvad:$libdir"
-
-    patchelf \
-       --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
-       --set-rpath $rpath $out/share/mullvad/mullvad-vpn
-
-    librarypath="${stdenv.lib.makeLibraryPath deps}:$libdir"
-
-    wrapProgram $out/share/mullvad/mullvad-vpn \
-        --prefix LD_LIBRARY_PATH : "$librarypath" \
-        --prefix PATH
+    mv usr/share/* $out/share
+    mv usr/bin/* $out/bin
+    mv opt/Mullvad\ VPN/* $out/share/mullvad
 
     sed -i 's|\/opt\/Mullvad.*VPN|'$out'/bin|g' $out/share/applications/mullvad-vpn.desktop
     sed -i 's|\/opt\/Mullvad.*VPN/resources|'$out'/bin|g' $out/share/mullvad/resources/mullvad-daemon.conf
@@ -106,12 +79,15 @@ stdenv.mkDerivation rec {
     ln -s $out/share/mullvad/mullvad-vpn $out/bin/mullvad-vpn
     ln -s $out/share/mullvad/resources/mullvad-daemon $out/bin/mullvad-daemon
 
+    install -Dm644 $out/share/mullvad/resources/mullvad-daemon.service $out/etc/systemd/system/mullvad-daemon.service
+
     runHook postInstall
   '';
 
   meta = with stdenv.lib; {
-    homepage = https://mullvad.net;
+    homepage = "https://github.com/mullvad/mullvadvpn-app";
     description = "Client for Mullvad VPN";
+    changelog = "https://github.com/mullvad/mullvadvpn-app/blob/${version}/CHANGELOG.md";
     license = licenses.gpl3;
     platforms = [ "x86_64-linux" ];
   };
