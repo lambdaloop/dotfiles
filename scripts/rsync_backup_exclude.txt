@@ -1,0 +1,2 @@
+/jellyfish/Downloads
+/jellyfish/tmp
