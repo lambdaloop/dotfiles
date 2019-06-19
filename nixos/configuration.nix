@@ -98,7 +98,6 @@ in
     xorg.xmodmap
     xorg.xbacklight
     xcompmgr
-    xmonad-with-packages
 
     # other programs
     cantata
@@ -189,9 +188,6 @@ in
          vdpauSupport = true;
          pulseSupport = true;
       };
-
-      xmonad-with-packages = pkgs.xmonad-with-packages.override {
-          packages = p: with p; [ xmonad-extras xmonad-contrib xmonad]; };
 
     };
 
