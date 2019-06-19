@@ -55,6 +55,7 @@ in
     # command line tools
     bash
     file
+    ffmpeg-full
     gitAndTools.gitFull
     htop
     killall
