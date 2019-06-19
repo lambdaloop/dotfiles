@@ -66,14 +66,13 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/share/mullvad $out/lib $out/bin
+    mkdir -p $out/share/mullvad $out/bin
 
     mv usr/share/* $out/share
     mv usr/bin/* $out/bin
     mv opt/Mullvad\ VPN/* $out/share/mullvad
 
     sed -i 's|\/opt\/Mullvad.*VPN|'$out'/bin|g' $out/share/applications/mullvad-vpn.desktop
-    sed -i 's|\/opt\/Mullvad.*VPN/resources|'$out'/bin|g' $out/share/mullvad/resources/mullvad-daemon.conf
     sed -i 's|\/opt\/Mullvad.*VPN/resources|'$out'/bin|g' $out/share/mullvad/resources/mullvad-daemon.service
 
     ln -s $out/share/mullvad/mullvad-vpn $out/bin/mullvad-vpn
