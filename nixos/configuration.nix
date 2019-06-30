@@ -88,6 +88,8 @@ in
     trayer
     maim
 
+    pulseaudioFull
+
     # dictionaries
     aspell
     aspellDicts.en aspellDicts.fr
@@ -249,6 +251,7 @@ in
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.systemWide = false;
+  hardware.pulseaudio.support32Bit = true;    ## If compatibility with 32-bit applications is desired.
 
   hardware.opengl = {
     enable = true;
@@ -346,7 +349,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pierre = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "power" "games" "storage" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "power" "games" "storage" "audio" ]; # Enable ‘sudo’ for the user.
   };
 
 

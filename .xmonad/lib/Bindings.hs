@@ -130,14 +130,13 @@ myKeysP conf =
 
 
   {- AUDIO MANAGEMENT -}
-  , ("<XF86AudioRaiseVolume>", spawn "amixer -c 1 set Master 1%+; bash ~/scripts/vol_xmobar.sh")
-  , ("<XF86AudioLowerVolume>", spawn "amixer -c 1 set Master 1%-; bash ~/scripts/vol_xmobar.sh")
+  , ("<XF86AudioRaiseVolume>", spawn "pulseaudio-ctl up 2; bash ~/scripts/vol_xmobar.sh")
+  , ("<XF86AudioLowerVolume>", spawn "pulseaudio-ctl down 2; bash ~/scripts/vol_xmobar.sh")
+  , ("<XF86AudioMute>", spawn "pactl set-sink-mute 1 toggle || amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
 
-  -- , ("<XF86AudioMute>", spawn "pactl set-sink-mute 1 toggle || amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
-  , ("<XF86AudioMute>", spawn "amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
 
-  , ("<F11>", spawn "amixer -c 1 set Master 1%+; bash ~/scripts/vol_xmobar.sh")
-  , ("<F10>", spawn "amixer -c 1 set Master 1%-; bash ~/scripts/vol_xmobar.sh")
+  , ("<F11>", spawn "pulseaudio-ctl up 2; bash ~/scripts/vol_xmobar.sh")
+  , ("<F10>", spawn "pulseaudio-ctl down 2; bash ~/scripts/vol_xmobar.sh")
   , ("<F12>", spawn "pactl set-sink-mute 1 toggle || amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
 
   -- , ("<XF86MonBrightnessDown>", spawn "xbacklight -inc -2")
