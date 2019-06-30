@@ -15,19 +15,26 @@ let python-rofi = python3.pkgs.buildPythonPackage rec {
     };
 in
 python3.withPackages (ps: with ps; [
-  numpy
-  scipy
-  pandas
-  matplotlib
-  tkinter
-  seaborn
-  opencv3
+  dbus
+  dbus-python
+  h5py
+  ipython
   kitchen
+  matplotlib
   notebook
+  numba
+  numpy
+  opencv3
+  pandas
+  pip
+  pydbus
+  python-rofi
+  scikitlearn
+  scipy
+  seaborn
+  tkinter
+  toml
+  tqdm
   toolz
   virtualenv
-  scikitlearn
-  h5py
-  pip
-  python-rofi
 ])

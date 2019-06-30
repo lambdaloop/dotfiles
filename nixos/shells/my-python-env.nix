@@ -26,7 +26,12 @@ buildFHSUserEnv {
       virtualenv
       scikitlearn
       h5py
+      pydbus
       pip
+      dbus
+      numba
+      ipython
+      # pydbus
     ]))
     pipenv
     which
@@ -34,6 +39,7 @@ buildFHSUserEnv {
     binutils
     zsh
     perl
+    dbus
     
     # All the C libraries that a manylinux_1 wheel might depend on:
     ncurses
@@ -43,6 +49,7 @@ buildFHSUserEnv {
     xorg.libICE
     xorg.libSM
     glib
+
 
   ];
 
