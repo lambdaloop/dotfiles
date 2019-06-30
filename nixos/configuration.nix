@@ -346,7 +346,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pierre = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "power" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "power" "games" "storage" ]; # Enable ‘sudo’ for the user.
   };
 
 
@@ -355,6 +355,8 @@ in
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/reboot
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/systemctl suspendg
   %power      ALL=(ALL:ALL) NOPASSWD: /home/pierre/scripts/fix_brightness_permissions.sh
+  %storage      ALL=(ALL:ALL) NOPASSWD: ${pkgs.libuuid}/bin/mount
+  %storage      ALL=(ALL:ALL) NOPASSWD: ${pkgs.exfat}/bin/mount.exfat
 '';
 
   # This value determines the NixOS release with which your system is to be
