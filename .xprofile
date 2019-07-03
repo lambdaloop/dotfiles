@@ -48,3 +48,5 @@ emacs --daemon &
 sudo /home/pierre/scripts/fix_brightness_permissions.sh &
 
 bash ~/scripts/changeBackground.sh &
+
+start-pulseaudio-x11 &
