@@ -17,6 +17,7 @@ in
 python3.withPackages (ps: with ps; [
   dbus
   dbus-python
+  flake8
   h5py
   ipython
   kitchen
@@ -29,8 +30,10 @@ python3.withPackages (ps: with ps; [
   pip
   pydbus
   python-rofi
+  retry
   scikitlearn
   scipy
+  sphinx
   seaborn
   tkinter
   toml
@@ -38,3 +41,5 @@ python3.withPackages (ps: with ps; [
   toolz
   virtualenv
 ])
+
+

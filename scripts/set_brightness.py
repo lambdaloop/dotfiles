@@ -3,7 +3,7 @@ import sys
 import os
 import math
 
-COMMANDS = ['inc', 'dec', 'set', 'get']
+COMMANDS = ['inc', 'dec', 'set', 'get', 'max']
 
 if len(sys.argv) < 2:
     exit()
@@ -32,17 +32,22 @@ def set_brightness(value):
 
 def get_proper_step():
     cur = get_current_brightness()
-    cur = 500
     maxi = get_max_brightness()
     ratio = cur / float(maxi)
-    step = 1 + (math.exp(10*ratio)-1) * (0.3 / math.e)
+    # step = 1 + (math.exp(10*ratio)-1) * (0.3 / math.e)
+    step = 0.01 * maxi
     return int(round(step))
-        
+    
+
+
 if cmd == 'set':
     value = int(sys.argv[2])
     set_brightness(value)
 elif cmd == 'get':
     value = get_current_brightness()
+    print(value)
+elif cmd == 'max':
+    value = get_max_brightness()
     print(value)
 elif cmd == 'inc':
     if len(sys.argv) >= 3:

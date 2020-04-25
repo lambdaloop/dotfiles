@@ -4,15 +4,26 @@ from rofi import Rofi
 import subprocess
 import shlex
 
-r = Rofi(rofi_args=['-font', 'Noto Sans 20', '-i'], lines=1)
+def get_dpi():
+    x = subprocess.run(['xfconf-query', '-c', 'xsettings', '-p', '/Xft/DPI'],
+                       capture_output=True)
+    return float(x.stdout)
+
+dpi = get_dpi()
+fontsize = dpi * (12 / 90.0)
+fontsize = int(round(fontsize))
+
+r = Rofi(rofi_args=['-font', 'Noto Sans ' + str(fontsize), '-i', '-width', '75'], lines=1)
 
 apps = [
+    ('c', 'Calibre', 'calibre'),
     ('f', 'Firefox', 'firefox'),
     ('r', 'Anki', 'anki'),
     ('g', 'gsimplecal', 'gsimplecal'),
     ('m', 'Cantata', 'cantata'),
-    ('n', 'Nautilus', 'nautilus'),
-    ('s', 'Spotify', 'spotify --force-device-scale-factor=2'),
+    ('n', 'Thunar', 'thunar'),
+    ('s', 'Spotify', 'spotify'),
+    ('x', 'Spotify (2x)', 'spotify --force-device-scale-factor=2'),
     ('t', 'kteatime', 'kteatime'),
     ('z', 'Zotero', 'zotero')
 ]

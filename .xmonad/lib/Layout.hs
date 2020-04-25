@@ -33,6 +33,7 @@ import XMonad.ManageHook
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.LayoutBuilder
+import XMonad.Config.Xfce
 
 import XMonad.Util.Themes
 import qualified XMonad.StackSet as W
@@ -40,7 +41,7 @@ import qualified XMonad.StackSet as W
 import Data.Ratio ((%))
 
 -- spacing between windows
-mySpacing = 0 -- pixels
+mySpacing = 6 -- pixels
 
 -- The default number of windows in the master pane
 nmaster = 1
@@ -56,9 +57,9 @@ ratio  = goldenRatio
 imListRatio = 1%6
 
 myLayout =  lessBorders (Combine Union Screen OtherIndicated) . avoidStruts $
-                   onWorkspaces ["0", "0_0", "1_0"] experimentalLayout $
+                   -- onWorkspaces ["0", "0_0", "1_0"] experimentalLayout $
 		   -- onWorkspaces ["8", "0_8", "1_8"] (gimpLayout ||| normalLayout) $
-                   onWorkspaces ["6", "0_6", "1_6"] (imLayout ||| normalLayout) $
+                   -- onWorkspaces ["6", "0_6", "1_6"] (imLayout ||| normalLayout) $
 		   -- tiled ||| Mirror tiled ||| Full ||| simplestFloat
                    normalLayout
   where
@@ -80,9 +81,11 @@ myLayout =  lessBorders (Combine Union Screen OtherIndicated) . avoidStruts $
                              ||| myTabs
                              ||| noFrillsDeco shrinkText tabTheme tiled
                              ||| tallTabbed
-                                --- ||| magnifier tiled ||| Grid
+                                ||| magnifier tiled ||| Grid
 
-        normalLayout = smartSpacing mySpacing tiled ||| smartSpacing mySpacing (StackTile nmaster delta (1/2))
+        normalLayout = smartSpacing mySpacing tiled
+          -- ||| smartSpacing mySpacing (StackTile nmaster delta (1/2))
+          ||| smartSpacing mySpacing (Mirror tiled)
                        ||| noBorders myTabs
                        ||| noBorders Full ||| simplestFloat
 
@@ -95,9 +98,12 @@ myLayout =  lessBorders (Combine Union Screen OtherIndicated) . avoidStruts $
         -- imLayout = Grid
 
 
+rectTransform (W.RationalRect x y w h) = W.RationalRect (max x 0.25) (max y 0.25) (min 0.5 w) (min 0.5 h) 
+
 myManageHook = composeAll
 			  [
-                           isDialog --> doFloat
+                           isDialog --> doFloatDep rectTransform
+                          -- , title =? "File Upload" --> doFloatDep rectTransform
                           , resource =? "Do" --> doIgnore
                           , resource =? "synapse" --> doIgnore
 			  , resource =? "xfce4-notifyd"  --> doIgnore
@@ -107,15 +113,32 @@ myManageHook = composeAll
 			  , resource =? "xmessage" --> doCenterFloat
 			  , className =? "Pinentry" --> doCenterFloat
 				--               , resource =? "Gimp-2.6" --> doFloat
-			  , className =? "Gimp" --> doFloat
-			  , className =? "Tilem" --> doFloat
+			  , className =? "Gcolor3" --> doFloat
+			  , className =? "Yad" --> doFloatDep rectTransform
+			  , className =? "Xfrun4" --> doFloat
+			  , className =? "Gsimplecal" --> doFloat
+			  , className =? "Run program..." --> doFloat
+			  -- , className =? "Gimp" --> doFloat
+			  -- , className =? "Tilem" --> doFloat
                           , className =? "sun-awt-X11-XFramePeer" --> doFloat
                           , className =? "com-mathworks-util-PostVMInit" --> doFloat
+                          , className =? "Xfce4-notifyd" --> doIgnore
+                          , className =? "Xfce4-terminal" --> doF (W.swapDown)
+                          , className =? "Emacs" --> doF (W.swapDown)
+                          , title =? "Whisker Menu" --> doFloat
                             
 			  , title =? "Run Application" --> doFloat
 			  -- , title =? "Upload Variables" --> doF (W.swapDown)
-                          , title =? "MPlayer" --> doShift "9"
+                          -- , title =? "MPlayer" --> doShift "9"
+                          , firefoxDialogs --> doFloatDep rectTransform
+                          , windowRole =? "GtkFileChooserDialog" --> doFloatDep rectTransform
+                          , windowRole =? "pop-up" --> doFloatDep rectTransform
 			  , isFullscreen --> doFullFloat
 			  ]
+  where
+    firefoxDialogs = className =? "Firefox" <&&> resource /=? "Navigator"
+    windowRole = stringProperty "WM_WINDOW_ROLE"
 
-newManageHook = myManageHook <+> manageHook desktopConfig <+> doF (W.swapDown)
+newManageHook = myManageHook <+> manageHook xfceConfig 
+-- newManageHook = myManageHook <+> manageHook desktopConfig -- <+> doF (W.swapDown)
+-- newManageHook = manageHook desktopConfig

@@ -44,6 +44,8 @@ let
         --add-flags "-b"
     '';
 
+  chainFile = "~/tmp/conda_chainer.sh";
+  
 in
 (
   pkgs.buildFHSUserEnv {
@@ -78,7 +80,7 @@ in
         wxGTK31
         gtk3
         pkgconfig
-        
+        libGLU_combined
 
         # Just in case one installs a package with pip instead of conda and pip
         # needs to compile some C sources
@@ -91,9 +93,17 @@ in
 
         git
         zsh
+        fish
         perl
         binutils
         which
+        openssh
+        gnumake
+        cmake
+        libcap
+        libcap_progs
+        libcap_pam
+        libcap_ng
       ]
     );
     profile = ''
@@ -106,9 +116,12 @@ in
       export FONTCONFIG_FILE=/etc/fonts/fonts.conf
       export QTCOMPOSE=${pkgs.xorg.libX11}/share/X11/locale
       export LOCALE_ARCHIVE=/run/current-system/sw/lib/locale/locale-archive
-      alias sa='source activate'
+      alias sa="source activate"
+      alias ca="conda activate"
+      unset SOURCE_DATE_EPOCH
     '';
+
     
-    runScript = "zsh";
+    runScript = "${chainFile}";
   }
 ).env

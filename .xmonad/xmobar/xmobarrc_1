@@ -31,5 +31,5 @@ Config {
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "  %date%      <fn=1></fn> %diskjf%      <fn=1></fn> %disku%      %batteryIcon% %battery%}<fn=2>%StdinReader%</fn>{<fn=3>%musicInfo%</fn> <fn=3>%music%</fn>  %musicState% "
+  , template = "  %date%    <fn=1></fn> %diskjf%     <fn=1></fn> %disku%    %batteryIcon% %battery%}<fn=2>%StdinReader%</fn>{<fn=3>%musicInfo%</fn> <fn=3>%music%</fn>  %musicState% "
 }

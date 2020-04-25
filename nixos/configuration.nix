@@ -34,6 +34,10 @@ in
 
   boot.kernelModules = [ "fuse" "coretemp"];
 
+  hardware.bluetooth = {
+     enable = true;
+   };
+  
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -47,6 +51,7 @@ in
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
+  # time.timeZone = "America/Chicago";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -69,7 +74,7 @@ in
     # core GUIs
     emacs
     evince
-    firefox
+    firefox-bin
     gparted
     inkscape
     konsole
@@ -87,8 +92,6 @@ in
     rofi
     trayer
     maim
-
-    pulseaudioFull
 
     # dictionaries
     aspell
@@ -241,8 +244,10 @@ in
   services.printing = {
     enable = true;
     webInterface = true;
-    drivers = with pkgs; [ gutenprint ];
+    drivers = with pkgs; [ gutenprint gutenprintBin hplipWithPlugin brlaser ];
   };
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
 
   # Automatic device mounting daemon
   services.devmon.enable = true;
@@ -252,7 +257,9 @@ in
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.systemWide = false;
   hardware.pulseaudio.support32Bit = true;    ## If compatibility with 32-bit applications is desired.
-
+  hardware.pulseaudio.package = pkgs.pulseaudioFull;
+  hardware.pulseaudio.zeroconf.discovery.enable = true;
+     
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
@@ -349,7 +356,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pierre = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "power" "games" "storage" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "power" "games" "storage" "audio" "pulse" "dialout"];
   };
 
 
@@ -358,7 +365,8 @@ in
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/reboot
   %power      ALL=(ALL:ALL) NOPASSWD: ${pkgs.systemd}/bin/systemctl suspendg
   %power      ALL=(ALL:ALL) NOPASSWD: /home/pierre/scripts/fix_brightness_permissions.sh
-  %storage      ALL=(ALL:ALL) NOPASSWD: ${pkgs.libuuid}/bin/mount
+  %storage      ALL=(ALL:ALL) NOPASSWD: ${pkgs.utillinux}/bin/mount
+  %storage      ALL=(ALL:ALL) NOPASSWD: ${pkgs.utillinux}/bin/umount
   %storage      ALL=(ALL:ALL) NOPASSWD: ${pkgs.exfat}/bin/mount.exfat
 '';
 
@@ -373,7 +381,7 @@ in
     { device = "/dev/disk/by-label/jellyfish";
       fsType = "ext2";
     };
-
+  
   #  services.emacs.enable = true;
 
   hardware.facetimehd.enable = true;

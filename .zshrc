@@ -73,14 +73,14 @@ export TERM=xterm-256color
 
 export SHELL=$(which zsh)
 
-if [ -n "$INSIDE_EMACS" ]; then
-    ## this setups the path properly
-    export TERM="eterm-color"
-    chpwd() { print -P "\033AnSiTc %d" }
-    print -P "\033AnSiTu %n"
-    print -P "\033AnSiTc %d"
-    unsetopt PROMPT_SP
-fi
+# if [ -n "$INSIDE_EMACS" ]; then
+#     ## this setups the path properly
+#     export TERM="eterm-color"
+#     chpwd() { print -P "\033AnSiTc %d" }
+#     print -P "\033AnSiTu %n"
+#     print -P "\033AnSiTc %d"
+#     unsetopt PROMPT_SP
+# fi
 
 function list_all() {
     emulate -L zsh
@@ -91,10 +91,10 @@ chpwd_functions=(${chpwd_functions[@]} "list_all")
 # unregister broken GHC packages. Run this a few times to resolve dependency rot in installed packages.
 # ghc-pkg-clean -f cabal/dev/packages*.conf also works.
 function ghc-pkg-clean() {
-  for p in `ghc-pkg check $* 2>&1  | grep problems | awk '{print $6}' | sed -e 's/:$//'`
-  do
-    echo unregistering $p; ghc-pkg $* unregister $p
-  done
+    for p in `ghc-pkg check $* 2>&1  | grep problems | awk '{print $6}' | sed -e 's/:$//'`
+    do
+        echo unregistering $p; ghc-pkg $* unregister $p
+    done
 }
 
 function matrun() {
@@ -109,16 +109,16 @@ function matrunq() {
 # remove all installed GHC/cabal packages, leaving ~/.cabal binaries and docs in place.
 # When all else fails, use this to get out of dependency hell and start over.
 function ghc-pkg-reset() {
-  if [[ $(readlink -f /proc/$$/exe) =~ zsh ]]; then
-    read 'ans?Erasing all your user ghc and cabal packages - are you sure (y/N)? '
-  else # assume bash/bash compatible otherwise
-    read -p 'Erasing all your user ghc and cabal packages - are you sure (y/N)? ' ans
-  fi
+    if [[ $(readlink -f /proc/$$/exe) =~ zsh ]]; then
+        read 'ans?Erasing all your user ghc and cabal packages - are you sure (y/N)? '
+    else # assume bash/bash compatible otherwise
+        read -p 'Erasing all your user ghc and cabal packages - are you sure (y/N)? ' ans
+    fi
 
-  [[ x$ans =~ "xy" ]] && ( \
-    echo 'erasing directories under ~/.ghc'; command rm -rf `find ~/.ghc/* -maxdepth 1 -type d`; \
-    echo 'erasing ~/.cabal/lib'; command rm -rf ~/.cabal/lib; \
-  )
+    [[ x$ans =~ "xy" ]] && ( \
+                             echo 'erasing directories under ~/.ghc'; command rm -rf `find ~/.ghc/* -maxdepth 1 -type d`; \
+                             echo 'erasing ~/.cabal/lib'; command rm -rf ~/.cabal/lib; \
+        )
 }
 
 alias cabalupgrades="cabal list --installed  | egrep -iv '(synopsis|homepage|license)'"
@@ -128,6 +128,11 @@ setopt COMPLETE_ALIASES
 export DISABLE_AUTO_UPDATE="true"
 
 source $ZSH/oh-my-zsh.sh
+
+source ~/scripts/setenv.sh
+
+# add fzf to reverse history search
+# source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -161,37 +166,81 @@ alias l='ls --color=tty -v'
 alias rs='rsync -ah --info=progress2'
 alias rsog='rsync -ah --info=progress2 --no-perms --no-owner --no-group --no-times'
 alias doc2pdf="loffice --headless --convert-to pdf:writer_pdf_Export"
-# alias kobo="k2pdfopt -ui- -h 1827 -w 1404 -dpi 300 -fc-"
+# alias kobo="k2pdfopt -ui- -h 1927 -w 1404 -dpi 200 -fc-"
 alias kobo="k2pdfopt -ui- -h 1727 -w 1304 -dpi 300 -fc- -x" # use smaller width for margin
 alias open="xdg-open"
 alias ot="xdg-open . &"
 
 alias sa="source activate"
+alias ca="conda activate"
+
+alias callisto='ssh -o StrictHostKeyChecking=no pierre@$(ssh callisto "curl -s -6 ifconfig.co")'
+
+function tomp4() {
+    ffmpeg -i $1 -vcodec h264 -pix_fmt yuv420p -qp 28 $2
+}
 
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  
 
+export DISABLE_AUTO_TITLE="true"
 
 local HAPPY_WORDS="/home/pierre/Dropbox/lists/happy_articles.txt"
 local HAPPY_FACES="/home/pierre/Dropbox/lists/happy_emoticons.txt"
 
 function greet() {
-    printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s\n" \
+    printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s \n" \
            "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
 }
 
 
 function conda-shell {
+    if [ -n "$1" ]; then
+        echo "source activate $1; zsh" > ~/tmp/conda_chainer.sh
+    else
+        echo 'zsh' > ~/tmp/conda_chainer.sh
+    fi
     command nix-shell ~/dotfiles/nixos/shells/conda-shell.nix
+}
+
+
+unsetopt prompt_cr prompt_sp
+
+function precmd () {
+    print -Pn "\e]0;$USER@$HOST:$PWD\a"
 }
 
 # function greet() {
 #     printf "Welcome to $fg_bold[blue]zsh$reset_color.\n"
 # }
 
-if [[ $SHLVL -eq 3 ]] ; then
+if [[ $SHLVL -le 3 ]] ; then
     echo
     # printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s\n" \
         #        "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
     greet
     echo
 fi
+
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/pierre/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/pierre/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/pierre/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/pierre/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# node version manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+

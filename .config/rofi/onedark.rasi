@@ -26,13 +26,13 @@
   spacing: 0;
   background-color: transparent;
 
-  font: "Noto Sans 22";
+  font: "Noto Sans 15";
   text-color: @text;
 }
 
 window {
   transparency: "real";
-  background-color: #282c34dd;
+  background-color: #282c34ff;
 }
 
 

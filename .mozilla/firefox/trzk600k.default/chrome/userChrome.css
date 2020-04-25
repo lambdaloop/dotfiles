@@ -9,8 +9,10 @@
 }
 
 menubar, toolbar, nav-bar, #TabsToolbar > *{
-  background-color: #102235 !important;
+  background-color: #32302F !important;
 }
+
+/* #1d2021 */
 
 #sidebar {
   min-width: 50px !important;

@@ -118,7 +118,8 @@ changePokemonBackground = randomBackground pokemonBaseFolder pokemonFolders
 
 changeWorkspaceBackground :: String -> X ()
 changeWorkspaceBackground name = spawn command
-    where command = printf "habak -ms ~/Pictures/wallpapers/chosen/small-desktops/%s" name
+    where command = printf "/home/pierre/scripts/setBackground.sh ~/Pictures/wallpapers/chosen/small-desktops/%s" name
+    -- where command = printf "habak -ms ~/Pictures/wallpapers/chosen/small-desktops/%s" name
 
 bookPath = "/home/pierre/Dropbox/reading/current"
   

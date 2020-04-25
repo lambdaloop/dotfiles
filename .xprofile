@@ -3,50 +3,54 @@
 source ~/scripts/setenv.sh
 
 #Xresources
-xrdb -merge ~/.Xresources
+# xrdb -merge ~/.Xresources
 
-screentest=`xrandr | grep ' connected' | wc -l`
+# screentest=`xrandr | grep ' connected' | wc -l`
 
-#does different stuff depending on number of screens
-function two-screens
-{
-    if [ $screentest -eq 1 ]; then
-        eval $1 #one screen
-    else
-        eval $2 #two screens
-    fi
-}
+# #does different stuff depending on number of screens
+# function two-screens
+# {
+#     if [ $screentest -eq 1 ]; then
+#         eval $1 #one screen
+#     else
+#         eval $2 #two screens
+#     fi
+# }
 
 
-two-screens '' 'xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP1 --off'
+# two-screens '' 'xrandr --output DP1 --scale 1.8x1.8 --panning 4608x2592+0+0 --primary --auto --output eDP1 --off'
 
 #manage backgrounds and trayer
-bash ~/scripts/twoScreenStuff.sh
+# bash ~/scripts/twoScreenStuff.sh
 
 #notification daemon thing
 # dunst /home/pierre/.config/dunst/dunstrc &
 
-xsetroot -cursor_name left_ptr
+# xsetroot -cursor_name left_ptr
 
 #KEYBOARD
 setxkbmap dvorak
 setxkbmap -option ctrl:nocaps
 xmodmap ~/.xmodmap && xkbset m
-xset r rate 200 15 # set keyboard repeat and delay
+# xset r rate 200 15 # set keyboard repeat and delay
 # xcape -e "Control_L=Control_L|C" -t 300
 
 ## 37.8717° N, 122.2728° W for Berkeley
 ## 41.73, -71.30 for Barrington
-# redshift-gtk -l 37.8717:-122.2728  -t 6500:3100 -m vidmode & #color adjustion
+# redshift-gtk -l 37.8717:-122.2728  -t 6500:4000 -m vidmode & #color adjustion
 
-nm-applet &
-kteatime &
+# nm-applet &
+# kteatime &
 
-emacs --daemon &
+fcitx &
+
+sleep 1 && LC_CTYPE=zh_CN.UTF-8 emacs --daemon &
 
 # setup permissions for brightness
-sudo /home/pierre/scripts/fix_brightness_permissions.sh &
+# sudo /home/pierre/scripts/fix_brightness_permissions.sh &
 
-bash ~/scripts/changeBackground.sh &
+# bash ~/scripts/changeBackground.sh &
 
-start-pulseaudio-x11 &
+# start-pulseaudio-x11 &
+
+# xmonad --replace &

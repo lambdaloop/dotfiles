@@ -9,11 +9,13 @@ function display_error()
 end
 
 function load_sub_fn()
-  path = mp.get_property("path")
+  path = mp.get_property("media-title")
+  print(path)
   srt_path = string.gsub(path, "%.%w+$", ".srt")
   t = { args = { "subliminal", "download", "-s", "-f", "-l", "en", path } }
 
   mp.osd_message("Searching subtitle")
+  
   res = utils.subprocess(t)
   if res.error == nil then
     if mp.commandv("sub_add", srt_path) then

@@ -3,6 +3,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.Submap
 import XMonad.Actions.GridSelect
 import XMonad.Actions.MouseGestures
+import XMonad.Actions.UpdatePointer
 import XMonad.Config.Kde
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
@@ -38,9 +39,9 @@ import Bindings
 import Layout
 import Utils (replace)
 
-myFocusedBorderColor = "#699DD1"
-myNormalBorderColor = "#102235"
-myBorderWidth = 5 -- pixels
+myFocusedBorderColor =  "#d18d86" -- "#699DD1" -- "#664F3D" -- "#F4EBD4"
+myNormalBorderColor = "#32302f" --"#102235" -- "#F4EBD4"
+myBorderWidth = 6 -- pixels
 
 workspaceNames = map show ([1..9] ++ [0])
 
@@ -82,8 +83,9 @@ myConf nScreens = kdeConfig
                 , keys = const (M.fromList [])
                 , workspaces = workspaceNames -- [workspaceNames, withScreens nScreens workspaceNames] !! (screenNum - 1)
                 -- , terminal = "emacsclient -c -e '(eshell)'"
-                , terminal = "konsole --hide-menubar"
-                --, terminal = "/bin/xfce4-terminal -e '/bin/zsh'"
+                -- , terminal = "konsole --hide-menubar"
+                -- , terminal = "xfce4-terminal"
+                , terminal = "emacsclient -c -e '(progn (vterm-toggle) (delete-other-windows))'"
                 , startupHook = startupHook kdeConfig >> setWMName "LG3D"
                 }
   where (S screenNum) = nScreens
@@ -133,12 +135,15 @@ cleanUp = filter (not . (`elem` "{}"))
 main = do
      nScreens <- countScreens
      let (S screenNum) = nScreens
-     spawn "bash ~/scripts/reset_empty_pipe.sh"
-     xmobarConfig <- liftM (filter (/='\n')) $
-       runProcessWithInput "/home/pierre/scripts/get_xmobar_config.sh" [] ""
-     xmproc <- spawnPipe $ printf "xmobar %s" xmobarConfig
+     spawn "xmodmap ~/.xmodmap"
+     -- spawn "xcompmgr"
+     -- spawn "bash ~/scripts/reset_empty_pipe.sh"
+     -- xmobarConfig <- liftM (filter (/='\n')) $
+     --   runProcessWithInput "/home/pierre/scripts/get_xmobar_config.sh" [] ""
+     -- xmproc <- spawnPipe $ printf "xmobar %s" xmobarConfig
      let conf = ewmh $ (myConf nScreens) {
-                 logHook = dynamicLogWithPP (customPP screenNum) {ppOutput = hPutStrLn xmproc}
+                 logHook = dynamicLogWithPP (customPP screenNum) -- >> updatePointer (0.5, 0.5) (0, 0)
+                 -- {ppOutput = hPutStrLn xmproc}
      }
      xmonad $ fullscreenFix $
        conf { startupHook = startupHook conf >> setWMName "LG3D"}
