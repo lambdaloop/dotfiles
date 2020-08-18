@@ -50,7 +50,7 @@ lockScreenCmd :: String
 lockScreenCmd = "xlock -mode blank -echokeys -echokey '*'"
 
 editor :: String
-editor = "emacsclient --alternate-editor='emacs' -c"
+editor = "LC_ALL=C emacsclient --alternate-editor='emacs' -c"
 
 spawnEdit :: MonadIO m => String -> m ()
 spawnEdit file = spawn $ printf "%s %s" editor file

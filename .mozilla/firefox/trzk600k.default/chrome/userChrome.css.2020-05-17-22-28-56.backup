@@ -1,0 +1,42 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#TabsToolbar {
+    visibility: collapse !important;
+}
+
+#sidebar-header {
+  display: none;
+}
+
+menubar, toolbar, nav-bar, #TabsToolbar > *{
+  background-color: #32302F !important;
+}
+
+/* #1d2021 */
+
+#sidebar {
+  min-width: 50px !important;
+}
+
+/* autohide bookmarks */
+/* #PersonalToolbar:not([customizing]) { margin-bottom: -28px; } */
+/* :root[uidensity="compact"] #PersonalToolbar:not([customizing]) { margin-bottom: -22px; } */
+/* :root[uidensity="touch"] #PersonalToolbar:not([customizing]) { margin-bottom: -34px; } */
+
+/* #PersonalToolbar:not([customizing]){ */
+/* 	transform: rotateX(90deg); */
+/* 	transform-origin: top; */
+/* 	transition: transform 0ms step-end 0ms !important; */
+/* 	z-index: 1; */
+/* 	border-bottom: transparent; */
+/* } */
+
+/* /\* SELECT BOOKMARKS TOOLBAR BEHAVIOR *\/ */
+/* /\* Comment out to disable either one of these *\/ */
+
+/* #nav-bar:focus-within + #PersonalToolbar, /\* Show when urlbar is focused *\/ */
+/* #navigator-toolbox:hover > #PersonalToolbar /\* Show when cursor is over the toolbar area *\/ */
+/* { */
+/* 	transform: rotateX(0); */
+/* 	border-bottom: solid 1px lightgray; */
+/* } */

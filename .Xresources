@@ -1,7 +1,7 @@
 
 
 Xcursor.theme: Vanilla-DMZ-AA
-Xcursor.size: 96
+Xcursor.size: 32
 ! Emacs.font: Inconsolata-8.5
 Emacs.fontBackend: xft
 Emacs.menuBar: off
@@ -14,7 +14,7 @@ Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintmedium
 Xft.hinting: 1
 Xft.antialias: 1
-Xft.dpi: 192
+Xft.dpi: 96
 Xft.rgba: rgb
 
 URxvt*font: xft:Dina-10

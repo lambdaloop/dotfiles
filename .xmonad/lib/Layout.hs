@@ -41,7 +41,7 @@ import qualified XMonad.StackSet as W
 import Data.Ratio ((%))
 
 -- spacing between windows
-mySpacing = 6 -- pixels
+mySpacing = 0 -- pixels
 
 -- The default number of windows in the master pane
 nmaster = 1
@@ -51,7 +51,8 @@ delta   = 3/100
 
 -- Default proportion of screen occupied by master pane
 goldenRatio = toRational $ 2/(1 + sqrt 5 :: Double)
-ratio  = goldenRatio
+-- ratio  = goldenRatio
+ratio = 0.65
 
 -- Ratio of screen that roster will occupy
 imListRatio = 1%6
@@ -61,14 +62,15 @@ myLayout =  lessBorders (Combine Union Screen OtherIndicated) . avoidStruts $
 		   -- onWorkspaces ["8", "0_8", "1_8"] (gimpLayout ||| normalLayout) $
                    -- onWorkspaces ["6", "0_6", "1_6"] (imLayout ||| normalLayout) $
 		   -- tiled ||| Mirror tiled ||| Full ||| simplestFloat
-                   normalLayout
+                   -- normalLayout
+                normalLayout
   where
 	tiled = ResizableTall nmaster delta ratio []
 
         gimpLayout = combineTwoP (TwoPane 0.03 0.15) tiled
-				 (reflectHoriz $ combineTwoP (TwoPane 0.03 0.2) tiled (tiled ||| Grid)
-		                                                      (Role "gimp-dock"))
-                                 (Role "gimp-toolbox")
+                         (reflectHoriz $ combineTwoP (TwoPane 0.03 0.2) tiled (tiled ||| Grid)
+		            (Role "gimp-dock"))
+                         (Role "gimp-toolbox")
 
         myTabs = tabbedBottom shrinkText tabTheme
 
@@ -81,7 +83,7 @@ myLayout =  lessBorders (Combine Union Screen OtherIndicated) . avoidStruts $
                              ||| myTabs
                              ||| noFrillsDeco shrinkText tabTheme tiled
                              ||| tallTabbed
-                                ||| magnifier tiled ||| Grid
+                             ||| magnifier tiled ||| Grid
 
         normalLayout = smartSpacing mySpacing tiled
           -- ||| smartSpacing mySpacing (StackTile nmaster delta (1/2))

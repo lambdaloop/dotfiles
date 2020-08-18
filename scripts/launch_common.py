@@ -1,43 +1,62 @@
 #!/usr/bin/env python3
 
-from rofi import Rofi
+# from rofi import Rofi
 import subprocess
 import shlex
+from subprocess import Popen, PIPE
+
+simple = b"""
+hello
+world
+line too
+line three
+"""
+output = Popen(['grep', 'line'], stdin=PIPE, stdout=PIPE).communicate(simple)
+print(output)
 
 def get_dpi():
     x = subprocess.run(['xfconf-query', '-c', 'xsettings', '-p', '/Xft/DPI'],
-                       capture_output=True)
+                       stdout=subprocess.PIPE)
     return float(x.stdout)
 
 dpi = get_dpi()
-fontsize = dpi * (12 / 90.0)
+fontsize = dpi * (20 / 90.0)
 fontsize = int(round(fontsize))
 
-r = Rofi(rofi_args=['-font', 'Noto Sans ' + str(fontsize), '-i', '-width', '75'], lines=1)
+# r = Rofi(rofi_args=['-font', 'Noto Sans ' + str(fontsize), '-i', '-width', '75'], lines=1)
+rofi_cmd = [ "rofi", "-dmenu",
+             "-i", "-auto-select", "-p", "",
+             "-font", 'DejaVu Sans Mono ' + str(fontsize),
+             "-width", "200", "-height", "100" ]
 
 apps = [
-    ('c', 'Calibre', 'calibre'),
-    ('f', 'Firefox', 'firefox'),
-    ('r', 'Anki', 'anki'),
-    ('g', 'gsimplecal', 'gsimplecal'),
-    ('m', 'Cantata', 'cantata'),
-    ('n', 'Thunar', 'thunar'),
-    ('s', 'Spotify', 'spotify'),
-    ('x', 'Spotify (2x)', 'spotify --force-device-scale-factor=2'),
-    ('t', 'kteatime', 'kteatime'),
-    ('z', 'Zotero', 'zotero')
+    ('c', '📚', 'calibre'),
+    ('f', '', 'firefox'),
+    ('g', '📅', 'gsimplecal'),
+    ('m', '🎵', 'cantata'),
+    ('n', '📁', 'thunar'),
+    ('r', '🎴', 'anki'),
+    ('s', '📻', 'spotify'),
+    ('x', '📻🔍', 'spotify --force-device-scale-factor=2'),
+    ('t', '🍵', 'kteatime'),
+    ('z', '📑', 'zotero')
 ]
 
-keys = dict([('key'+str(i), (x[0], x[1]))
-             for i, x in enumerate(apps, start=1)])
+apps_dict = dict()
+for app in apps:
+    apps_dict[app[0]] = app
 
-_, index = r.select('Launch', [], **keys)
+lines = '\n'.join(["{0} {1}".format(*row) for row in apps])
 
-# print(index)
-if index > 0:
-    app = apps[index-1]
+output = Popen(rofi_cmd, stdin=PIPE, stdout=PIPE).communicate(lines.encode('utf8'))
+
+sel = output[0]
+
+if len(sel) >= 1:
+    char = chr(sel[0])
+    if char not in apps_dict: exit()
+    app = apps_dict[char]
     print(app[2])
     args = shlex.split(app[2])
     p = subprocess.Popen(args)
-    p.wait()
-
+    # p.wait()

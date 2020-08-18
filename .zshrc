@@ -82,10 +82,12 @@ export SHELL=$(which zsh)
 #     unsetopt PROMPT_SP
 # fi
 
+
 function list_all() {
     emulate -L zsh
     ls --color -v
 }
+
 chpwd_functions=(${chpwd_functions[@]} "list_all")
 
 # unregister broken GHC packages. Run this a few times to resolve dependency rot in installed packages.
@@ -126,6 +128,7 @@ alias cabalupgrades="cabal list --installed  | egrep -iv '(synopsis|homepage|lic
 setopt COMPLETE_ALIASES
 
 export DISABLE_AUTO_UPDATE="true"
+export DISABLE_MAGIC_FUNCTIONS="true" # no paste business
 
 source $ZSH/oh-my-zsh.sh
 
@@ -184,8 +187,8 @@ source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export DISABLE_AUTO_TITLE="true"
 
-local HAPPY_WORDS="/home/pierre/Dropbox/lists/happy_articles.txt"
-local HAPPY_FACES="/home/pierre/Dropbox/lists/happy_emoticons.txt"
+local HAPPY_WORDS="/home/pierre/dotfiles/lists/happy_articles.txt"
+local HAPPY_FACES="/home/pierre/dotfiles/lists/happy_emoticons.txt"
 
 function greet() {
     printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s \n" \
@@ -203,23 +206,24 @@ function conda-shell {
 }
 
 
-unsetopt prompt_cr prompt_sp
+eval "$(starship init zsh)"
 
-function precmd () {
-    print -Pn "\e]0;$USER@$HOST:$PWD\a"
-}
+# unsetopt prompt_cr prompt_sp
+
+# function precmd () {
+#     print -Pn "\e]0;$USER@$HOST:$PWD\a"
+# }
 
 # function greet() {
 #     printf "Welcome to $fg_bold[blue]zsh$reset_color.\n"
 # }
 
-if [[ $SHLVL -le 3 ]] ; then
-    echo
-    # printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s\n" \
-        #        "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
-    greet
-    echo
-fi
+# if [[ $SHLVL -le 21 ]] ; then
+echo ""
+# printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s\n" \
+    #        "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
+greet
+# fi
 
 
 
@@ -244,3 +248,23 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
+## emacs vterm prompt
+# function vterm_printf(){
+#     if [ -n "$TMUX" ]; then
+#         # Tell tmux to pass the escape sequences through
+#         # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+#         printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+#     elif [ "${TERM%%-*}" = "screen" ]; then
+#         # GNU screen (screen, screen-256color, screen-256color-bce)
+#         printf "\eP\e]%s\007\e\\" "$1"
+#     else
+#         printf "\e]%s\e\\" "$1"
+#     fi
+# }
+
+# vterm_prompt_end() {
+#     vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+# }
+
+# setopt PROMPT_SUBST
+# PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'

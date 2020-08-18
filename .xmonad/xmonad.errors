@@ -1,0 +1,28 @@
+
+lib/Layout.hs:62:1: warning: [-Wtabs]
+    Tab character found here, and in 64 further locations.
+    Please use spaces instead.
+   |
+62 |                    -- onWorkspaces ["8", "0_8", "1_8"] (gimpLayout ||| normalLayout) $
+   | ^^^^^^^^
+
+lib/Layout.hs:82:30: warning: [-Wdeprecations]
+    In the use of ‘smartSpacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+   |
+82 |         experimentalLayout = smartSpacing mySpacing (StackTile nmaster delta (1/2)) ||| spiral goldenRatio ||| Accordion ||| Circle ||| simpleCross
+   |                              ^^^^^^^^^^^^
+
+lib/Layout.hs:88:24: warning: [-Wdeprecations]
+    In the use of ‘smartSpacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+   |
+88 |         normalLayout = smartSpacing mySpacing tiled
+   |                        ^^^^^^^^^^^^
+
+lib/Layout.hs:90:15: warning: [-Wdeprecations]
+    In the use of ‘smartSpacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+   |
+90 |           ||| smartSpacing mySpacing (Mirror tiled)
+   |               ^^^^^^^^^^^^

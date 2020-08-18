@@ -44,7 +44,7 @@ xmodmap ~/.xmodmap && xkbset m
 
 fcitx &
 
-sleep 1 && LC_CTYPE=zh_CN.UTF-8 emacs --daemon &
+# sleep 0.5 && LC_CTYPE=zh_CN.UTF-8 emacs --daemon &
 
 # setup permissions for brightness
 # sudo /home/pierre/scripts/fix_brightness_permissions.sh &
@@ -53,4 +53,5 @@ sleep 1 && LC_CTYPE=zh_CN.UTF-8 emacs --daemon &
 
 # start-pulseaudio-x11 &
 
-# xmonad --replace &
+xmonad --replace &
+

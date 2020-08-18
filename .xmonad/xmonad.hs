@@ -39,9 +39,9 @@ import Bindings
 import Layout
 import Utils (replace)
 
-myFocusedBorderColor =  "#d18d86" -- "#699DD1" -- "#664F3D" -- "#F4EBD4"
-myNormalBorderColor = "#32302f" --"#102235" -- "#F4EBD4"
-myBorderWidth = 6 -- pixels
+myFocusedBorderColor = "#BD93F9" -- "#d18d86" -- "#699DD1" -- "#664F3D" -- "#F4EBD4"
+myNormalBorderColor = "#282A36" -- "#32302f" --"#102235" -- "#F4EBD4"
+myBorderWidth = 4 -- pixels
 
 workspaceNames = map show ([1..9] ++ [0])
 

@@ -8,7 +8,8 @@ PATH=/home/pierre/bin:/home/pierre/.cabal/bin:$PATH
 # rofi -x -- -i -nb '#2d2d2d' -sb '#37526e'  -b -fn "Monospace-9" -l 10 | bash
 
 # rofi -show run -theme ~/.config/rofi/onedark.rasi -bw 2 -columns 3
-rofi -show run -theme ~/.config/rofi/ribbon.rasi -columns 1
+rofi -show run -theme ~/.config/rofi/dracula.rasi -bw 2 -columns 3
+# rofi -show run -theme ~/.config/rofi/ribbon.rasi -columns 1
 
 # rofi -show run -bw 2 -columns 3 -location 0 -font "Noto Sans 18"
 

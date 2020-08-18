@@ -1,0 +1,1 @@
+fromList [("Search [google]: ",["searchList :: [(String, S.SearchEngine)]\nsearchList = [ (\"g\", S.google)\n             , (\"h\", S.hoogle)\n             , (\"w\", S.wikipedia)\n             ]\n","oeu"]),("Search [hoogle]: ",[""]),("Search [wiki]: ",["hello"])]

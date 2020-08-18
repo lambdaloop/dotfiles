@@ -6,6 +6,9 @@ import XMonad.Layout.ResizableTile
 import XMonad.Hooks.ManageDocks
 import qualified XMonad.StackSet as W
 import qualified XMonad.Actions.FlexibleResize as Flex
+import qualified XMonad.Prompt         as P
+import qualified XMonad.Actions.Submap as SM
+import qualified XMonad.Actions.Search as S
 
 import Text.Printf (printf)
 import System.Exit
@@ -34,6 +37,8 @@ myWindowBringerConfig = def
   , windowTitler = myWindowTitler
   }
 
+
+
 myKeysP conf =
 
   {- WINDOW MANAGEMENT -}
@@ -49,9 +54,9 @@ myKeysP conf =
   , ("M-<Up>", sendMessage MirrorExpand)
   , ("M-<Left>", sendMessage Shrink)
   , ("M-<Right>", sendMessage Expand)
-  , ("M-y", swapNextScreen)
-  , ("M-s", nextScreen)
-  , ("M-S-s", shiftNextScreen)
+  -- , ("M-y", swapNextScreen)
+  -- , ("M-s", nextScreen)
+  -- , ("M-S-s", shiftNextScreen)
   , ("M-h", windows W.focusDown)
   , ("M-t", windows W.focusUp)
   , ("M-S-h", windows W.swapDown)
@@ -116,9 +121,9 @@ myKeysP conf =
 
   {- SCREEN MANAGEMENT -}
 
-  , ("M-/", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 180; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 45; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 40; xrandr --auto; xmonad --restart;")
-  , ("M-=", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 100; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 28; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 28; xrandr --output eDP-1 --off --auto; xmonad --restart")
-  , ("M-\\", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 90; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 25; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 25; xrandr --output eDP-1 --off --auto; xmonad --restart")
+  -- , ("M-/", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 180; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 45; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 40; xrandr --auto; xmonad --restart;")
+  , ("M-=", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 100; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 30; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 30; xrandr --output eDP-1 --off --auto; xmonad --restart")
+  -- , ("M-\\", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 90; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 25; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 25; xrandr --output eDP-1 --off --auto; xmonad --restart")
   , ("M--", spawn "bash ~/scripts/restart_panel.sh")
   
     -- left
@@ -158,23 +163,26 @@ myKeysP conf =
 
 
   {- AUDIO MANAGEMENT -}
-  , ("<XF86AudioRaiseVolume>", spawn "pulseaudio-ctl up 2; bash ~/scripts/vol_xmobar.sh")
-  , ("<XF86AudioLowerVolume>", spawn "pulseaudio-ctl down 2; bash ~/scripts/vol_xmobar.sh")
-  , ("<XF86AudioMute>", spawn "pactl set-sink-mute 1 toggle || amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
+  , ("<XF86AudioRaiseVolume>", spawn "pulseaudio-ctl up 2")
+  , ("<XF86AudioLowerVolume>", spawn "pulseaudio-ctl down 2")
+  , ("<XF86AudioMute>", spawn "pulseaudio-ctl mute")
 
 
-  , ("<F11>", spawn "pulseaudio-ctl up 2; bash ~/scripts/vol_xmobar.sh")
-  , ("<F10>", spawn "pulseaudio-ctl down 2; bash ~/scripts/vol_xmobar.sh")
-  , ("<F12>", spawn "pactl set-sink-mute 1 toggle || amixer set Master toggle; bash ~/scripts/vol_xmobar.sh")
+  , ("<F11>", spawn "pulseaudio-ctl up 2")
+  , ("<F10>", spawn "pulseaudio-ctl down 2")
+  , ("<F12>", spawn "pulseaudio-ctl mute")
 
 
   , ("<XF86AudioPrev>", spawn "python3 ~/scripts/media.py prev")
   , ("<XF86AudioNext>", spawn "python3 ~/scripts/media.py next")
   , ("<XF86AudioPlay>", spawn "python3 ~/scripts/media.py toggle")
 
-  , ("M-<XF86AudioPlay>", spawn "python3 ~/scripts/media.py get-details > /tmp/xmonad.music")
-  , ("M-<XF86AudioNext>", spawn "mpc random")
-  , ("M-<XF86AudioPrev>", spawn "mpc repeat")
+  -- , ("M-<XF86AudioPlay>", spawn "python3 ~/scripts/media.py get-details > /tmp/xmonad.music")
+  -- , ("M-<XF86AudioNext>", spawn "mpc random")
+  -- , ("M-<XF86AudioPrev>", spawn "mpc repeat")
+  -- , ("<S-<XF86AudioPrev>", spawn "python3 ~/scripts/media.py seek-prev && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  -- , ("<S-<XF86AudioNext>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  -- , ("<S-<XF86AudioPlay>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
 
   , ("<F7>", spawn "python3 ~/scripts/media.py seek-prev && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
   , ("<F9>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
@@ -193,7 +201,15 @@ myKeysP conf =
   , ("S-<F5>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
   , ("S-<F3>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
  ]
+  ++ [("M-s " ++ k, S.promptSearch P.def f) | (k,f) <- searchList ]
+  ++ [("M-S-s " ++ k, S.selectSearch f) | (k,f) <- searchList ]
 
+searchList :: [(String, S.SearchEngine)]
+searchList = [ ("g", S.google)
+             , ("h", S.hoogle)
+             , ("w", S.wikipedia)
+             ]
+  
 -- extraKeys :: [((ButtonMask, KeySym), X ())]
 -- extraKeys = [((0, xK_Alt_R), spawn "bash ~/scripts/switchLayouts.sh")
 --             -- , ((0, xK_Super_R), spawn "sleep 0.05 && xdotool click 3; echo click >> /tmp/clicks")

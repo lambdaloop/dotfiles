@@ -20,7 +20,10 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
+export LC_TIME="en_GB.utf8"
+
 export BROWSER=firefox;
 
 export EDITOR="emacsclient -c"
 
+export CALIBRE_USE_DARK_PALETTE=1
