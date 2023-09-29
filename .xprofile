@@ -30,6 +30,7 @@ source ~/scripts/setenv.sh
 
 #KEYBOARD
 setxkbmap dvorak
+# setxkbmap -layout us -variant dvp
 setxkbmap -option ctrl:nocaps
 xmodmap ~/.xmodmap && xkbset m
 # xset r rate 200 15 # set keyboard repeat and delay
@@ -42,7 +43,10 @@ xmodmap ~/.xmodmap && xkbset m
 # nm-applet &
 # kteatime &
 
-fcitx &
+mpd &
+
+# fcitx &
+ibus-daemon -drxR &
 
 # sleep 0.5 && LC_CTYPE=zh_CN.UTF-8 emacs --daemon &
 

@@ -7,7 +7,8 @@ import re
 from kitchen.text.converters import to_bytes, to_unicode
 
 COMMANDS = ['next', 'prev', 'toggle', 'seek-next', 'seek-prev',
-            'get-time', 'get-title', 'get-paused', 'get-player', 'get-details']
+            'get-time', 'get-title', 'get-paused', 'get-player', 'get-details',
+            'get-title-details']
 
 if len(sys.argv) < 2:
     exit()
@@ -19,6 +20,11 @@ if cmd not in COMMANDS:
 socks = glob.glob('/tmp/mpsyt-*.sock')
 # x = os.popen('ps -ef | grep mpsyt').read().strip().split('\n')
 pctl = os.popen('playerctl status').read().strip()
+
+x = os.popen('mpc status').read()
+m = re.search(r'\[(paused|playing)\]', x)
+mpd_paused = not m or m.groups()[0] == 'paused'
+
 
 if pctl == 'Playing' or pctl == 'Paused':
     player = 'playerctl'
@@ -67,8 +73,8 @@ if player == 'playerctl':
             title = title[:num]
         print(title)
     elif cmd == 'get-details':
-        artist = os.popen('playerctl metadata artist').read().strip()
-        album = os.popen('playerctl metadata album').read().strip()
+        artist = os.popen('playerctl -p spotify  metadata artist').read().strip()
+        album = os.popen('playerctl -p spotify  metadata album').read().strip()
         title = artist
         if len(album) > 1:
             title += "- " + album
@@ -165,6 +171,13 @@ elif player == 'mpd':
         print(title)
     elif cmd == 'get-details':
         title = os.popen("mpc current -f '[[%name%-]%artist%[ - %album%]]|???'").read()
+        title = to_unicode(title)
+        if len(sys.argv) >= 3:
+            num = int(sys.argv[2])
+            title = title[:num]
+        print(title)
+    elif cmd == 'get-title-details':
+        title = os.popen('mpc current -f "[[[%name%-]%artist%[ - %album%]]|???] - [%title%|%name%|%file%]"').read()
         title = to_unicode(title)
         if len(sys.argv) >= 3:
             num = int(sys.argv[2])

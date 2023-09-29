@@ -123,6 +123,7 @@ myManageHook = composeAll
 			  -- , className =? "Gimp" --> doFloat
 			  -- , className =? "Tilem" --> doFloat
                           , className =? "sun-awt-X11-XFramePeer" --> doFloat
+                          , className =? "MATLAB R2021a - academic use" --> doFloat
                           , className =? "com-mathworks-util-PostVMInit" --> doFloat
                           , className =? "Xfce4-notifyd" --> doIgnore
                           , className =? "Xfce4-terminal" --> doF (W.swapDown)

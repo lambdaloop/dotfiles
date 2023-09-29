@@ -1,5 +1,5 @@
 [user]
-	name = Pierre Karashchuk
+	name = Lili Karashchuk
 	email = krchtchk@gmail.com
 [alias]
 	c = commit
@@ -11,3 +11,5 @@
 	s = status
 	b = branch
 	pom = push -u origin master
+[init]
+	defaultBranch = main

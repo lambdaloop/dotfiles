@@ -4,11 +4,12 @@
 export PATH=/usr/local/bin:/usr/bin:/bin:$PATH
 
 # MAX_WAIT=600 #seconds
-#MAX_WAIT=1 #seconds
+MAX_WAIT=10 #seconds
 # random number between 0 and MAX_WAIT (inclusive)
-# RAND=$(echo `cat /dev/urandom | od -N2 -An -i` % $MAX_WAIT | bc)
+RAND=$(echo `cat /dev/urandom | od -N2 -An -i` % $MAX_WAIT | bc)
 
-# sleep $RAND
+echo $RAND
+sleep $RAND
 
 export DISPLAY=:0
 export XAUTHORITY=/home/pierre/.Xauthority

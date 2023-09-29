@@ -54,9 +54,9 @@ myKeysP conf =
   , ("M-<Up>", sendMessage MirrorExpand)
   , ("M-<Left>", sendMessage Shrink)
   , ("M-<Right>", sendMessage Expand)
-  -- , ("M-y", swapNextScreen)
-  -- , ("M-s", nextScreen)
-  -- , ("M-S-s", shiftNextScreen)
+  , ("M-y", swapNextScreen)
+  , ("M-s", nextScreen)
+  , ("M-S-s", shiftNextScreen)
   , ("M-h", windows W.focusDown)
   , ("M-t", windows W.focusUp)
   , ("M-S-h", windows W.swapDown)
@@ -65,8 +65,8 @@ myKeysP conf =
   , ("M-r", sendMessage ToggleStruts)
   -- , ("M-b", sendMessage $ SetStruts [minBound .. maxBound] [])
 
-  , ("M-g", gotoMenuConfig myWindowBringerConfig)
-  , ("M-S-g", bringMenuConfig myWindowBringerConfig)
+  -- , ("M-g", gotoMenuConfig myWindowBringerConfig)
+  -- , ("M-S-g", bringMenuConfig myWindowBringerConfig)
 
   , ("M-n", withFocused $ windows . W.sink)
   , ("M-q", kill)
@@ -76,19 +76,23 @@ myKeysP conf =
   , ("M-S-<Return>", spawn $ XMonad.terminal conf)
   , ("M-C-S-<Return>", spawn $ "xfce4-terminal")
   , ("M-i", runOrRaise "firefox" (className =? "Firefox"))
+  -- , ("M-i", runOrRaise "firefox-dev" (className =? "Firefox Developer Edition"))
   -- , ("M-s", raiseMaybe (spawn "spotify") (className =? "Spotify"))
-  , ("M-S-i", spawn "conkeror")
+  , ("M-S-i", spawn "chromium")
   , ("M-e", spawn editor)
   , ("M-C-e", spawn "notify-send 'starting conda emacs'; bash ~/scripts/conda_emacs.sh")
   , ("M-S-e", spawn "killall emacs; emacs --daemon; emacsclient -c")
   , ("M-u", spawn $ "python3 ~/scripts/launch_common.py")
-  , ("M-l", spawn "cantata")
+  , ("M-l", spawn "ymuse")
+  , ("M-S-l", spawn "gpodder")
   , ("M-C-p", spawn "mpv $(xclip -o)")
-  , ("M-C-l", spawn "xflock4")
+  , ("M-C-z", spawn "chromium --audio-buffer-size=1024 $(xclip -o | sed -r 's,/j/,/wc/join/,g')")
+  -- , ("M-C-z", spawn "firefox $(xclip -o | sed -r 's,/j/,/wc/join/,g')")
+  , ("M-C-r", spawn "xflock4")
   , ("M-C-s", spawn "xfce4-session-logout")
   --, forEmacs ("M-b", spawn "emacsclient -c -e '(beeminder-list-goals)'")
-  , forEmacs ("M-c", spawn "emacsclient -c -e '(org-capture)'")
-  , ("M-j", spawnEdit journalFile)
+  -- , forEmacs ("M-c", spawn "emacsclient -c -e '(org-capture)'")
+  -- , ("M-j", spawnEdit journalFile)
   -- , ("M-m", spawn "xfce4-popup-whiskermenu")
   -- , ("M-g", spawnEdit notesFile)
 
@@ -102,29 +106,32 @@ myKeysP conf =
   -- , ("M-S-c", spawn "bash ~/scripts/pick_google_music_title.sh")
 
     -- backgrounds
-  , ("M-]", spawn "bash ~/scripts/changeBackground.sh")
-  , ("M-S-]", changeVideoBackground)
-  , ("M-S-[", spawn "bash ~/scripts/pokemon_backgrounds.sh")
-  , ("M-[", spawn "bash ~/scripts/cool_backgrounds.sh")
+  -- , ("M-#", spawn "bash ~/scripts/changeBackground.sh")
+  -- , ("M-S-#", changeVideoBackground)
+  , ("M-S-#", spawn "bash ~/scripts/pokemon_backgrounds.sh")
+  , ("M-#", spawn "bash ~/scripts/cool_backgrounds.sh")
 
     -- keyboard
   , ("C-S-1", spawn "xmodmap ~/.xmodmap; xkbset r m; xset r rate 200 15; notify-send 'put back keybindings'")
   , ("C-S-2", spawn "bash ~/scripts/switchLayouts.sh; notify-send 'switched layout'")
   , ("C-S-3", spawn "xdotool key Caps_Lock")
-  , ("<F2>", spawn "bash ~/scripts/toggle_russian.sh")
+  , ("C-S-&", spawn "xmodmap ~/.xmodmap; xkbset r m; xset r rate 200 15; notify-send 'put back keybindings'")
+  , ("C-S-[", spawn "bash ~/scripts/switchLayouts.sh; notify-send 'switched layout'")
+  , ("C-S-{", spawn "xdotool key Caps_Lock")
+  -- , ("<F2>", spawn "bash ~/scripts/toggle_russian.sh")
   -- , ("M-S-m", spawn "sleep 0.5 && xdotool key --clearmodifiers Hangul_Hanja")
 
     -- misc
   , ("M-v", spawn "bash ~/scripts/take_screenshot.sh")
-  -- , ("M-S-g", spawn "python3 ~/scripts/grateful_dead.py")
+  , ("M-S-g", spawn "python3 ~/scripts/grateful_dead.py")
 
 
   {- SCREEN MANAGEMENT -}
 
   -- , ("M-/", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 180; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 45; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 40; xrandr --auto; xmonad --restart;")
-  , ("M-=", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 100; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 30; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 30; xrandr --output eDP-1 --off --auto; xmonad --restart")
+  -- , ("M-=", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 100; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 30; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 30; xrandr --output eDP-1 --off --auto; xmonad --restart")
   -- , ("M-\\", spawn "xfconf-query -c xsettings -p /Xft/DPI -s 90; xfconf-query -c xfce4-panel -p /panels/panel-0/size -s 25; xfconf-query -c xfce4-panel -p /plugins/plugin-8/icon-size -s 25; xrandr --output eDP-1 --off --auto; xmonad --restart")
-  , ("M--", spawn "bash ~/scripts/restart_panel.sh")
+  , ("C-S-4", spawn "bash ~/scripts/restart_panel.sh")
   
     -- left
   -- , ("M-/", spawn "xrandr --output DP1 --off --auto --output eDP1 --primary --auto --panning 2560x1600; killall trayer; xmonad --restart; bash ~/scripts/twoScreenStuff.sh;")
@@ -168,9 +175,9 @@ myKeysP conf =
   , ("<XF86AudioMute>", spawn "pulseaudio-ctl mute")
 
 
-  , ("<F11>", spawn "pulseaudio-ctl up 2")
-  , ("<F10>", spawn "pulseaudio-ctl down 2")
-  , ("<F12>", spawn "pulseaudio-ctl mute")
+  , ("<F6>", spawn "pulseaudio-ctl up 2")
+  , ("<F5>", spawn "pulseaudio-ctl down 2")
+  , ("<F4>", spawn "pulseaudio-ctl mute")
 
 
   , ("<XF86AudioPrev>", spawn "python3 ~/scripts/media.py prev")
@@ -178,31 +185,31 @@ myKeysP conf =
   , ("<XF86AudioPlay>", spawn "python3 ~/scripts/media.py toggle")
 
   -- , ("M-<XF86AudioPlay>", spawn "python3 ~/scripts/media.py get-details > /tmp/xmonad.music")
-  -- , ("M-<XF86AudioNext>", spawn "mpc random")
-  -- , ("M-<XF86AudioPrev>", spawn "mpc repeat")
-  -- , ("<S-<XF86AudioPrev>", spawn "python3 ~/scripts/media.py seek-prev && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
-  -- , ("<S-<XF86AudioNext>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
-  -- , ("<S-<XF86AudioPlay>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  , ("M-<XF86AudioNext>", spawn "mpc random")
+  , ("M-<XF86AudioPrev>", spawn "mpc repeat")
+  , ("S-<XF86AudioPrev>", spawn "python3 ~/scripts/media.py seek-prev")
+  , ("S-<XF86AudioNext>", spawn "python3 ~/scripts/media.py seek-next")
+  -- , ("S-<XF86AudioPlay>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
 
-  , ("<F7>", spawn "python3 ~/scripts/media.py seek-prev && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
-  , ("<F9>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
-  , ("<F8>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  -- , ("<F7>", spawn "python3 ~/scripts/media.py seek-prev && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  -- , ("<F9>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  -- , ("<F8>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
 
 
-  , ("<F3>", spawn "python3 ~/scripts/media.py toggle")
-  , ("<F4>", spawn "python3 ~/scripts/media.py prev")
-  , ("<F5>", spawn "python3 ~/scripts/media.py next")
+  , ("<F1>", spawn "python3 ~/scripts/media.py prev")
+  , ("<F2>", spawn "python3 ~/scripts/media.py toggle")
+  , ("<F3>", spawn "python3 ~/scripts/media.py next")
 
-  , ("M-<F3>", spawn "python3 ~/scripts/media.py get-details > /tmp/xmonad.music")
-  , ("M-<F4>", spawn "mpc repeat")
-  , ("M-<F5>", spawn "mpc random")
+  -- , ("M-<F3>", spawn "python3 ~/scripts/media.py get-details > /tmp/xmonad.music")
+  -- , ("M-<F4>", spawn "mpc repeat")
+  -- , ("M-<F5>", spawn "mpc random")
 
-  , ("S-<F4>", spawn "python3 ~/scripts/media.py seek-prev && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
-  , ("S-<F5>", spawn "python3 ~/scripts/media.py seek-next && python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
-  , ("S-<F3>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
+  , ("S-<F1>", spawn "python3 ~/scripts/media.py seek-prev")
+  , ("S-<F3>", spawn "python3 ~/scripts/media.py seek-next")
+  -- , ("S-<F3>", spawn "python3 ~/scripts/media.py get-time > /tmp/xmonad.music")
  ]
-  ++ [("M-s " ++ k, S.promptSearch P.def f) | (k,f) <- searchList ]
-  ++ [("M-S-s " ++ k, S.selectSearch f) | (k,f) <- searchList ]
+  -- ++ [("M-s " ++ k, S.promptSearch P.def f) | (k,f) <- searchList ]
+  -- ++ [("M-S-s " ++ k, S.selectSearch f) | (k,f) <- searchList ]
 
 searchList :: [(String, S.SearchEngine)]
 searchList = [ ("g", S.google)
@@ -226,6 +233,7 @@ zeroKey = xK_0
 leftMostKey = xK_grave
 
 upKeys = normalUpKeys ++ [zeroKey]
+-- upKeys = dvpUpKeys
 
 myKeys conf 1 = [((m .|. modm, k), sequence_ [windows $ f i, act i])
                    | (i, k) <- zip (XMonad.workspaces conf) upKeys

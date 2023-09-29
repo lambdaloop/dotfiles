@@ -1,16 +1,17 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/pierre/.oh-my-zsh
+export ZSH=/home/lili/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-if [ -n "$INSIDE_EMACS" ]; then
-    export ZSH_THEME="fishy-emacs"
-else
-    export ZSH_THEME="fishy-custom"
-fi
+# if [ -n "$INSIDE_EMACS" ]; then
+#     export ZSH_THEME="fishy-emacs"
+# else
+#     export ZSH_THEME="fishy-custom"
+# fi
 
+export ZSH_THEME=""
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -54,7 +55,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man-pages z pass nix-shell)
+plugins=(git colored-man-pages z pass nix-shell sd)
 # if [ -z "$INSIDE_EMACS" ]; then
 plugins+=zsh-autosuggestions
 # fi
@@ -64,8 +65,8 @@ plugins+=zsh-autosuggestions
 
 export BROWSER=firefox
 
-export PATH=/home/pierre/bin:$PATH
-export PATH=/home/pierre/.local/bin:$PATH
+export PATH=/home/lili/bin:$PATH
+export PATH=/home/lili/.local/bin:$PATH
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -177,7 +178,9 @@ alias ot="xdg-open . &"
 alias sa="source activate"
 alias ca="conda activate"
 
-alias callisto='ssh -o StrictHostKeyChecking=no pierre@$(ssh callisto "curl -s -6 ifconfig.co")'
+alias tp='tmux attach -t lili'
+
+alias callisto='ssh -o StrictHostKeyChecking=no lili@$(ssh callisto "curl -s -6 ifconfig.co")'
 
 function tomp4() {
     ffmpeg -i $1 -vcodec h264 -pix_fmt yuv420p -qp 28 $2
@@ -187,8 +190,8 @@ source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export DISABLE_AUTO_TITLE="true"
 
-local HAPPY_WORDS="/home/pierre/dotfiles/lists/happy_articles.txt"
-local HAPPY_FACES="/home/pierre/dotfiles/lists/happy_emoticons.txt"
+local HAPPY_WORDS="/home/lili/dotfiles/lists/happy_articles.txt"
+local HAPPY_FACES="/home/lili/dotfiles/lists/happy_emoticons.txt"
 
 function greet() {
     printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s \n" \
@@ -206,8 +209,10 @@ function conda-shell {
 }
 
 
-eval "$(starship init zsh)"
-
+# eval "$(starship init zsh)"
+fpath+=$HOME/builds/pure
+autoload -U promptinit; promptinit
+prompt pure
 # unsetopt prompt_cr prompt_sp
 
 # function precmd () {
@@ -229,14 +234,14 @@ greet
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/pierre/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/lili/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/pierre/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/pierre/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/lili/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/lili/mambaforge/etc/profile.d/conda.sh"
     else
-        export PATH="/home/pierre/miniconda3/bin:$PATH"
+        export PATH="/home/lili/mambaforge/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -247,24 +252,24 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
+source /etc/zsh_command_not_found
 ## emacs vterm prompt
-# function vterm_printf(){
-#     if [ -n "$TMUX" ]; then
-#         # Tell tmux to pass the escape sequences through
-#         # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
-#         printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-#     elif [ "${TERM%%-*}" = "screen" ]; then
-#         # GNU screen (screen, screen-256color, screen-256color-bce)
-#         printf "\eP\e]%s\007\e\\" "$1"
-#     else
-#         printf "\e]%s\e\\" "$1"
-#     fi
-# }
+function vterm_printf(){
+    if [ -n "$TMUX" ]; then
+        # Tell tmux to pass the escape sequences through
+        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
 
-# vterm_prompt_end() {
-#     vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
-# }
+vterm_prompt_end() {
+    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+}
 
-# setopt PROMPT_SUBST
-# PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+setopt PROMPT_SUBST
+PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'

@@ -4,7 +4,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-nchars=40
+nchars=80
 paused=`timeout 0.5 python3 ~/scripts/media.py get-paused`
 
 if [  "$paused" = "False"  ]; then

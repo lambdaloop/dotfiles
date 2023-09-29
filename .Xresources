@@ -7,9 +7,10 @@ Emacs.fontBackend: xft
 Emacs.menuBar: off
 Emacs.toolBar: -1
 Emacs.verticalScrollBars: off
-! Emacs*useXIM: false
+Emacs*useXIM: true
+emacs*useXIM: true
 
-Xft.autohint: 0
+.autohint: 0
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintmedium
 Xft.hinting: 1

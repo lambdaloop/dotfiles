@@ -70,7 +70,9 @@ dunst /home/pierre/.config/dunst/dunstrc &
 
 export BROWSER=firefox;
 
-setxkbmap dvorak; xmodmap ~/.xmodmap
+setxkbmap dvorak
+# setxkbmap -layout us -variant dvp
+xmodmap ~/.xmodmap
 
 ## SCIM
 export XMODIFIERS=@im=SCIM

@@ -22,11 +22,12 @@ href = item.find('a').attrs['href']
 href = href.replace('/details/', '')
 
 title = item.find('a').attrs['title']
-views = item.parent.findNextSibling(class_ = 'stat').find('nobr').text
+# views = item.parent.findNextSibling(class_ = 'stat').find('nobr').text
 
 playlist_file = "http://archive.org/download/{0}/{0}_vbr.m3u".format(href)
 
-message = '{}\nViews: {}\nPage: {}'.format(title, views, page)
+# message = '{}\nViews: {}\nPage: {}'.format(title, views, page)
+message = '{}\nPage: {}'.format(title, page)
 print(message)
 subprocess.call(['notify-send', '-t', '3000', message])
 

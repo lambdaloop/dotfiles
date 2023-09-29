@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RS='rsync -azh --info=progress2'
+RS='rsync -azhv --info=progress2'
 
-for folder in Dropbox research learning cs; do
+for folder in notes research learning cs; do
     echo $folder
-    $RS --delete ~/$folder callisto:~
+    $RS  /jellyfish/$folder callisto:/jellyfish
 done

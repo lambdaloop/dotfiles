@@ -39,9 +39,9 @@ import Bindings
 import Layout
 import Utils (replace)
 
-myFocusedBorderColor = "#BD93F9" -- "#d18d86" -- "#699DD1" -- "#664F3D" -- "#F4EBD4"
-myNormalBorderColor = "#282A36" -- "#32302f" --"#102235" -- "#F4EBD4"
-myBorderWidth = 4 -- pixels
+myFocusedBorderColor = "#fac863" -- "#BD93F9" -- "#d18d86" -- "#699DD1" -- "#664F3D" -- "#F4EBD4"
+myNormalBorderColor = "#1b2b34" -- "#282A36" -- "#32302f" --"#102235" -- "#F4EBD4"
+myBorderWidth = 3 -- pixels
 
 workspaceNames = map show ([1..9] ++ [0])
 
@@ -85,7 +85,7 @@ myConf nScreens = kdeConfig
                 -- , terminal = "emacsclient -c -e '(eshell)'"
                 -- , terminal = "konsole --hide-menubar"
                 -- , terminal = "xfce4-terminal"
-                , terminal = "emacsclient -c -e '(progn (vterm-toggle) (delete-other-windows))'"
+                , terminal = "emacsclient -c -e '(progn (vterm-toggle-show) (delete-other-windows))'"
                 , startupHook = startupHook kdeConfig >> setWMName "LG3D"
                 }
   where (S screenNum) = nScreens

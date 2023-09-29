@@ -4,12 +4,13 @@
     visibility: collapse !important;
 }
 
-#sidebar-header {
-  display: none;
-}
+/* #sidebar-header { */
+/*   display: none; */
+/* } */
 
 menubar, toolbar, nav-bar, #TabsToolbar > *{
-  background-color: #282a36 !important;
+  /* background-color: #282a36 !important; */
+  background-color: #1b2b34 !important;
 }
 
 /* #1d2021 */

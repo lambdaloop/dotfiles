@@ -5,15 +5,6 @@ import subprocess
 import shlex
 from subprocess import Popen, PIPE
 
-simple = b"""
-hello
-world
-line too
-line three
-"""
-output = Popen(['grep', 'line'], stdin=PIPE, stdout=PIPE).communicate(simple)
-print(output)
-
 def get_dpi():
     x = subprocess.run(['xfconf-query', '-c', 'xsettings', '-p', '/Xft/DPI'],
                        stdout=subprocess.PIPE)
@@ -22,6 +13,8 @@ def get_dpi():
 dpi = get_dpi()
 fontsize = dpi * (20 / 90.0)
 fontsize = int(round(fontsize))
+if fontsize == 0:
+    fontsize = 25
 
 # r = Rofi(rofi_args=['-font', 'Noto Sans ' + str(fontsize), '-i', '-width', '75'], lines=1)
 rofi_cmd = [ "rofi", "-dmenu",
@@ -30,9 +23,11 @@ rofi_cmd = [ "rofi", "-dmenu",
              "-width", "200", "-height", "100" ]
 
 apps = [
-    ('c', '📚', 'calibre'),
-    ('f', '', 'firefox'),
-    ('g', '📅', 'gsimplecal'),
+    ('a', '🖥', 'arandr'),
+    ('b', '📚', 'calibre'),
+    ('c', '📅', 'gnome-calendar'),
+    ('f', '🦊', 'firefox'),
+    ('g', '📧', 'geary'),
     ('m', '🎵', 'cantata'),
     ('n', '📁', 'thunar'),
     ('r', '🎴', 'anki'),

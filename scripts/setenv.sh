@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-export PATH=/home/pierre/.cabal/bin:$PATH
-export PATH=/home/pierre/bin:$PATH
-export PATH=/home/pierre/.local/bin:$PATH
-export PATH=/home/pierre/.cargo/bin:$PATH
+export PATH=$HOME/.cabal/bin:$PATH
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 # export PATH=/opt/android-sdk/platform-tools:$PATH
 # export PATH=/usr/bin:$PATH
 
@@ -16,14 +16,20 @@ export PATH=/home/pierre/.cargo/bin:$PATH
 # export QT_AUTO_SCREEN_SCALE_FACTOR=2
 
 # language stuff
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
+# export GTK_IM_MODULE=fcitx
+# export QT_IM_MODULE=fcitx
+# export XMODIFIERS=@im=fcitx
 
-export LC_TIME="en_GB.utf8"
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
 
-export BROWSER=firefox;
+export LC_TIME="en_US.utf8"
+export LC_CTYPE="en_US.UTF-8"
+
+export BROWSER=firefox
 
 export EDITOR="emacsclient -c"
 
 export CALIBRE_USE_DARK_PALETTE=1
+
