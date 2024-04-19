@@ -9,6 +9,6 @@ export CC="gcc-11"
     --with-imagemagick --with-x-toolkit=gtk  --with-modules=yes --with-m17n-flt \
     --with-gif --with-gnutls --with-jpeg --with-png --with-tiff --with-mailutils --with-json \
     --with-cairo --with-native-compilation --with-xft
-make -j8
+make -j6
 sudo make install
 

@@ -267,9 +267,36 @@ function vterm_printf(){
     fi
 }
 
+sidevids3() {
+    if [ "$#" -lt 3 ]; then
+        echo "Usage: sidevids <vid1> <vid2> <vid3> [params to mpv..]"
+        return 1
+    fi
+
+    local vid1="$1"
+    local vid2="$2"
+    local vid3="$3"
+
+    mpv --lavfi-complex="[vid1][vid2][vid3]hstack=inputs=3[vo]" "$vid1" --external-files="$vid2:$vid3" "${@:4}"
+}
+
+sidevids2() {
+    if [ "$#" -lt 2 ]; then
+        echo "Usage: sidevids2 <vid1> <vid2> [params to mpv..]"
+        return 1
+    fi
+
+    local vid1="$1"
+    local vid2="$2"
+
+    mpv --lavfi-complex="[vid1][vid2]hstack=inputs=2[vo]" "$vid1" --external-files="$vid2" "${@:3}"
+}
+
 vterm_prompt_end() {
     vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
 }
 
 setopt PROMPT_SUBST
 PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+
+export PATH=$PATH:/home/lili/.spicetify

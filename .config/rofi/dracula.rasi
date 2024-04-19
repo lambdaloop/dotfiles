@@ -25,7 +25,9 @@
     alternate-urgent-background:    @urgent-background;
     alternate-urgent-foreground:    @urgent-foreground;
     selected-active-foreground:     @foreground;
+    active-foreground:     @foreground;
     selected-urgent-background:     @normal-background;
+    active-background:    @normal-background;
     alternate-active-background:    @normal-background;
     alternate-active-foreground:    @selected-active-foreground;
     alternate-active-background:    @selected-active-background;

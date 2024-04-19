@@ -29,9 +29,9 @@ source ~/scripts/setenv.sh
 # xsetroot -cursor_name left_ptr
 
 #KEYBOARD
-setxkbmap dvorak
+# setxkbmap dvorak
 # setxkbmap -layout us -variant dvp
-setxkbmap -option ctrl:nocaps
+# setxkbmap -option ctrl:nocaps
 xmodmap ~/.xmodmap && xkbset m
 # xset r rate 200 15 # set keyboard repeat and delay
 # xcape -e "Control_L=Control_L|C" -t 300

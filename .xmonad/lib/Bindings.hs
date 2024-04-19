@@ -89,6 +89,7 @@ myKeysP conf =
   , ("M-C-z", spawn "chromium --audio-buffer-size=1024 $(xclip -o | sed -r 's,/j/,/wc/join/,g')")
   -- , ("M-C-z", spawn "firefox $(xclip -o | sed -r 's,/j/,/wc/join/,g')")
   , ("M-C-r", spawn "xflock4")
+  , ("M-C-l", spawn "xflock4")
   , ("M-C-s", spawn "xfce4-session-logout")
   --, forEmacs ("M-b", spawn "emacsclient -c -e '(beeminder-list-goals)'")
   -- , forEmacs ("M-c", spawn "emacsclient -c -e '(org-capture)'")

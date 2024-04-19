@@ -27,7 +27,7 @@ apps = [
     ('b', '📚', 'calibre'),
     ('c', '📅', 'gnome-calendar'),
     ('f', '🦊', 'firefox'),
-    ('g', '📧', 'geary'),
+    ('g', '📧', 'thunderbird'),
     ('m', '🎵', 'cantata'),
     ('n', '📁', 'thunar'),
     ('r', '🎴', 'anki'),
