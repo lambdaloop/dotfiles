@@ -133,7 +133,7 @@ export DISABLE_MAGIC_FUNCTIONS="true" # no paste business
 
 source $ZSH/oh-my-zsh.sh
 
-source ~/scripts/setenv.sh
+source ~/dotfiles/scripts/setenv.sh
 
 # add fzf to reverse history search
 # source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -208,6 +208,8 @@ function conda-shell {
     command nix-shell ~/dotfiles/nixos/shells/conda-shell.nix
 }
 
+# nvm init
+source /usr/share/nvm/init-nvm.sh
 
 # eval "$(starship init zsh)"
 fpath+=$HOME/builds/pure
@@ -215,44 +217,17 @@ autoload -U promptinit; promptinit
 prompt pure
 # unsetopt prompt_cr prompt_sp
 
-# function precmd () {
-#     print -Pn "\e]0;$USER@$HOST:$PWD\a"
-# }
-
-# function greet() {
-#     printf "Welcome to $fg_bold[blue]zsh$reset_color.\n"
-# }
-
-# if [[ $SHLVL -le 21 ]] ; then
 echo ""
-# printf "Welcome to $fg_bold[blue]zsh$reset_color.\nHave $fg_bold[green]%s$reset_color day! %s\n" \
-    #        "$(shuf $HAPPY_WORDS | head -1)" "$(shuf $HAPPY_FACES | head -1)"
 greet
-# fi
 
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/lili/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/lili/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/home/lili/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/lili/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 # node version manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-source /etc/zsh_command_not_found
+# source /etc/zsh_command_not_found
 ## emacs vterm prompt
 function vterm_printf(){
     if [ -n "$TMUX" ]; then
@@ -267,6 +242,15 @@ function vterm_printf(){
     fi
 }
 
+vterm_prompt_end() {
+    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+}
+
+setopt PROMPT_SUBST
+PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+
+
+#sidevids helpers
 sidevids3() {
     if [ "$#" -lt 3 ]; then
         echo "Usage: sidevids <vid1> <vid2> <vid3> [params to mpv..]"
@@ -292,11 +276,20 @@ sidevids2() {
     mpv --lavfi-complex="[vid1][vid2]hstack=inputs=2[vo]" "$vid1" --external-files="$vid2" "${@:3}"
 }
 
-vterm_prompt_end() {
-    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
-}
 
-setopt PROMPT_SUBST
-PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
 
-export PATH=$PATH:/home/lili/.spicetify
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba init' !!
+export MAMBA_EXE='/home/lili/.local/bin/micromamba';
+export MAMBA_ROOT_PREFIX='/home/lili/micromamba';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
+
+alias mamba=micromamba
+alias conda=micromamba

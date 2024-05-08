@@ -3,12 +3,15 @@
 cd ~/builds/emacs
 #git pull origin master
 # export PKG_CONFIG_PATH=/usr/lib/imagemagick6/pkgconfig
-export CC="gcc-11"
-# export CFLAGS='-O3'
-./configure \
-    --with-imagemagick --with-x-toolkit=gtk  --with-modules=yes --with-m17n-flt \
-    --with-gif --with-gnutls --with-jpeg --with-png --with-tiff --with-mailutils --with-json \
-    --with-cairo --with-native-compilation --with-xft
-make -j6
+make extraclean
+export CC="gcc-12"
+bash autogen.sh
+./configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
+    --with-cairo --with-libsystemd --with-tree-sitter \
+    --with-tiff --with-xft --with-xpm \
+    --with-x-toolkit=gtk3 --with-modules --with-native-compilation  \
+    CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer"
+make -j4 NATIVE_FULL_AOT=1
+# make -j6
 sudo make install
 
