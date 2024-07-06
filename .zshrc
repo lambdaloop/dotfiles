@@ -293,3 +293,7 @@ unset __mamba_setup
 
 alias mamba=micromamba
 alias conda=micromamba
+
+export LEDGER_FILE=~/notes/ledger/2024.journal
+
+alias h=hledger
